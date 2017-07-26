@@ -2,7 +2,7 @@ from django.forms import forms
 from django.shortcuts import render
 from rest_framework import viewsets
 from cases.serializers import PostSerializer, StartInImageSerializer, ProtectionImageSerializer, \
-    WorkSiteImageSerializer, FinishImageSerializer
+    WorkSiteImageSerializer, FinishImageSerializer, WorkerSerializer
 from .models import Post, StartInImage, ProtectionImage, WorkSiteImage, FinishImage, Worker, Service
 from django.http import Http404
 from rest_framework.decorators import api_view, permission_classes, detail_route
@@ -21,25 +21,6 @@ class PostViewSet(viewsets.ModelViewSet):
     # queryset = Post.objects.filter(village="云景里")
     serializer_class = PostSerializer
 
-
-# @api_view(['GET', 'POST', 'DELETE'])
-# @permission_classes((AllowAny,))  # 接口的访问权限设置http://www.django-rest-framework.org/api-guide/permissions/
-# def post_post(request, code=1):  # 加上了=1, http://127.0.0.1:8000/snippets/才能访问成功
-#     ff = 'ff'
-#     if request.method == 'POST':
-#         # ff = request.data
-#         ff = json.dumps(request.data)
-#         serializer = PostSerializer(data=request.data)
-#
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#     elif request.method == 'DELETE':
-#         post = Post.objects.get(code=code)
-#         post.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
-#     return Response(ff)
-#
 
 def get_district_name(district):
     if district == '1':
@@ -199,28 +180,15 @@ def save_post(request):
                 # todo 更新post的head字段,同时保存头图片
                 post.post_imag = v
                 post.save()
-        # for val in file_dic.values():
-        #     pass
-
-        # file = file_dic.get('post_imag0')  # 返回图片的字典
-        # file = request.FILES['start_in0']  # 返回图片的字典
-        # res_json = data['res']
-        # post_dic = json.loads(res_json)  # 反序列化,将json串转为字典
-        # village = post_dic['village']
-        # start_in_image = StartInImage(des='test01', path=file)
-        # start_in_image.save()
-        # post = Post(village=village, created_time=timezone.now())
-        # # post.post_imag = file
-        # post.save()
-        # todo 要先保存,然后才能做表之间的关联
-        # post.startinimage_set.add(start_in_image)
-
-        return Response("上传成功", status=status.HTTP_201_CREATED)
-        # serializer = SnippetSerializer(data=s)
+        list_post = []
+        list_post.append(post)
+        serializer = PostSerializer(list_post, many=True)
+        # ff = serializer.data
+        return Response({"code": "200", "msg": "上传成功", "photos": [], "data": serializer.data})
         # if serializer.is_valid():
         #     serializer.save()
         #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response("上传失败", status=status.HTTP_400_BAD_REQUEST)
+    return Response({"code": "205", "msg": "上传失败", "photos": [], "data": []})
 
 
 # 编辑已有的post的(包括上传图片)
@@ -287,8 +255,8 @@ def update_post(request):
                 # todo 更新post的head字段,同时保存头图片
                 post.post_imag = v
                 post.save()
-
-        return Response({"code": "200", "msg": "上传成功", "photos": photo_list, "data": []})
+        post_serializer = PostSerializer(post,many=False)
+        return Response({"code": "200", "msg": "上传成功", "photos": photo_list, "data": [],"post":post_serializer.data})
     return Response({"code": "205", "msg": "访问出错", "photos": [], "data": []})
 
 
@@ -358,3 +326,51 @@ def delete_photo(request):
         except Exception:
             return Response("删除失败")
     return Response("删除失败")
+
+
+# worker登录验证
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def login_worker(request):
+    if request.method == "GET":
+        try:
+            tele = request.GET.get('telephone')
+            password = request.GET.get('password')
+            worker_db = Worker.objects.get(tele=tele)
+            if worker_db is None:
+                return Response({"code": "205", "msg": "未注册", "workers": []})
+            if worker_db.password == password:
+                # list_worker = []
+                # list_worker.append(worker_db)
+                serializer = WorkerSerializer(worker_db, many=False)
+                ff= serializer.data
+                return Response({"code": "200", "msg": "登录成功", "worker": ff})
+            else:
+                return Response({"code": "205", "msg": "密码错误", "workers": []})
+        except Exception:
+            return Response({"code": "305", "msg": "登录失败", "workers": []})
+    return Response({"code": "305", "msg": "登录失败", "workers": []})
+
+# worker修改密码
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def new_password_worker(request):
+    if request.method == "GET":
+        try:
+            tele = request.GET.get('telephone')
+            new_password = request.GET.get('password')
+            worker_db = Worker.objects.get(tele=tele)
+            if worker_db is None:
+                return Response({"code": "205", "msg": "未注册", "workers": []})
+            if new_password is None:
+                return Response({"code": "205", "msg": "修改失败", "workers": []})
+            worker_db.password = new_password
+            worker_db.save()
+            # list_worker = []
+            # list_worker.append(worker_db)
+            # serializer = WorkerSerializer(list_worker,many=True)
+            serializer = WorkerSerializer(worker_db, many=False) # todo 实现返回单独的对象
+            return Response({"code": "200", "msg": "修改成功", "workers": [],"worker":serializer.data})
+        except Exception:
+            return Response({"code": "305", "msg": "修改失败", "workers": []})
+    return Response({"code": "305", "msg": "修改失败", "workers": []})

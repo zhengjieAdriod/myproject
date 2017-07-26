@@ -22,6 +22,9 @@ urlpatterns = [
     url(r'^post_by_worker/$', views.getPostListByWorker),  # 根据管家获得上传的post列表
     url(r'^photos_in_post/$', views.getPhotosByPost),  # 根据管家获得上传的post列表
     url(r'^delete_photo/$', views.delete_photo),  # 根据管家获得上传的post列表
+    url(r'^login_worker/$', views.login_worker),  # 管家登录
+    url(r'^new_password_worker/$', views.new_password_worker),  # 管家登录new_password_worker
+
 
     url(r'^post_by_page/$', views.getPostListByVillage),  # 条件查询的方法2
     url(r'^post_by_district/(?P<district>[0-9]+)/$', views.getPostListByBistrict),  # 条件查询的方法1

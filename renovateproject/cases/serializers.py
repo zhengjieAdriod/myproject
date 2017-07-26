@@ -34,14 +34,14 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
         fields = (
-            'pk', 'post_imag', 'village', 'district', 'created_time', 'predict', 'fact',
+            'pk', 'post_imag', 'village', 'district', 'created_time', 'area', 'predict', 'fact',
             'state', 'service', 'worker', 'scheme')
 
 
 class StartInImageSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = StartInImage
-        fields = ('pk','des', 'path')
+        fields = ('pk', 'des', 'path')
 
 
 class ProtectionImageSerializer(serializers.HyperlinkedModelSerializer):

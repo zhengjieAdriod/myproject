@@ -34,6 +34,8 @@ class Worker(models.Model):
     name = models.CharField(max_length=70, blank=True)
     # 手机号
     tele = models.CharField(max_length=70, blank=True)
+    # 初始密码
+    password = models.CharField(max_length=70, blank=True, default='111')
     # 案例个数
     num = models.PositiveIntegerField(default=0, blank=True)  # 字段的类型为 PositiveIntegerField，该类型的值只允许为正整数或 0
     # 好评度
@@ -81,7 +83,6 @@ class Post(models.Model):
     # 开工日期
     created_time = models.DateTimeField(null=True, blank=True)
 
-
     # 服务项目,如轻微损坏的墙面刷新
     service = models.ForeignKey(Service, null=True, blank=True)
     # 施工方案,如主卧室的基础性刷新
@@ -91,20 +92,9 @@ class Post(models.Model):
 
     # 状态,未开工\进行中\已完工
     state = models.CharField(max_length=70, blank=True)
+    area = models.CharField(max_length=70, blank=True)
 
-    # 施工进度 图片租
-    # start_in_image = models.ManyToManyField(StartInImage, null=True, blank=True)
-    # protection_image = models.ManyToManyField(ProtectionImage, null=True, blank=True)
-    # work_site_image = models.ManyToManyField(WorkSiteImage, null=True, blank=True)
-    # finish_image = models.ManyToManyField(FinishImage, null=True, blank=True)
 
-    # def save(self, commit=True):
-    #     for item in self.start_in_image:
-    #         # if item.des == 'start_in0':
-    #         self.start_in_image.add(item)
-    #     if commit:
-    #         self.save()
-    #     return self
 
     def __str__(self):
         # python_2_unicode_compatible 装饰器用于兼容 Python2
