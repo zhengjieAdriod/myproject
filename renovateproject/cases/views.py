@@ -65,9 +65,14 @@ def getPostListByVillage(request):
 def getPostListByPage(request):
     if request.method == 'GET':
         post_list = Post.objects.all()
-        paginator = Paginator(post_list, 1)  # 每页显示 25 个联系人
+        paginator = Paginator(post_list, 5)  # 每页显示 25 个联系人
         page = request.GET.get('page')
+        # page = 0
         # post = Post.objects.get(pk=1)
+        if "0" == page:
+            posts = Post.objects.all()
+            serializer = PostSerializer(posts, many=True)
+            return Response({"code": "200", "msg": "全部列表", "data": serializer.data})
         try:
             posts = paginator.page(page)
             serializer = PostSerializer(posts, many=True)
@@ -141,6 +146,7 @@ def save_post(request):
         village = post_dic['village']
         district = post_dic['district']
         state = post_dic['state']
+        area = post_dic['area']
         predict = post_dic['predict']
         fact = post_dic['fact']
         worker_dic = post_dic['worker']
@@ -153,6 +159,7 @@ def save_post(request):
         post.service = service
         post.worker = worker_db
         post.state = state
+        post.area = area
         post.district = district
         post.predict = predict
         post.fact = fact
@@ -210,10 +217,11 @@ def update_post(request):
         post = Post.objects.get(pk=pk)
         post.village = post_dic['village']
         post.district = post_dic['district']
-        post.created_time = timezone.now()
+        post.created_time = timezone.now()  # todo 时间待调整
         post.predict = post_dic['predict']
         post.fact = post_dic['fact']
         post.state = post_dic['state']
+        post.area = post_dic['area']
         post.save()
         list_imag = []
         photo_list = []
@@ -255,8 +263,8 @@ def update_post(request):
                 # todo 更新post的head字段,同时保存头图片
                 post.post_imag = v
                 post.save()
-        post_serializer = PostSerializer(post,many=False)
-        return Response({"code": "200", "msg": "上传成功", "photos": photo_list, "data": [],"post":post_serializer.data})
+        post_serializer = PostSerializer(post, many=False)
+        return Response({"code": "200", "msg": "上传成功", "photos": photo_list, "data": [], "post": post_serializer.data})
     return Response({"code": "205", "msg": "访问出错", "photos": [], "data": []})
 
 
@@ -343,13 +351,14 @@ def login_worker(request):
                 # list_worker = []
                 # list_worker.append(worker_db)
                 serializer = WorkerSerializer(worker_db, many=False)
-                ff= serializer.data
+                ff = serializer.data
                 return Response({"code": "200", "msg": "登录成功", "worker": ff})
             else:
                 return Response({"code": "205", "msg": "密码错误", "workers": []})
         except Exception:
             return Response({"code": "305", "msg": "登录失败", "workers": []})
     return Response({"code": "305", "msg": "登录失败", "workers": []})
+
 
 # worker修改密码
 @api_view(['GET'])
@@ -369,8 +378,8 @@ def new_password_worker(request):
             # list_worker = []
             # list_worker.append(worker_db)
             # serializer = WorkerSerializer(list_worker,many=True)
-            serializer = WorkerSerializer(worker_db, many=False) # todo 实现返回单独的对象
-            return Response({"code": "200", "msg": "修改成功", "workers": [],"worker":serializer.data})
+            serializer = WorkerSerializer(worker_db, many=False)  # todo 实现返回单独的对象
+            return Response({"code": "200", "msg": "修改成功", "workers": [], "worker": serializer.data})
         except Exception:
             return Response({"code": "305", "msg": "修改失败", "workers": []})
     return Response({"code": "305", "msg": "修改失败", "workers": []})
