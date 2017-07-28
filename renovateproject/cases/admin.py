@@ -26,7 +26,9 @@ class FinishImageInline(admin.StackedInline):
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['pk', 'village', 'district', 'created_time', 'service', 'worker']
+    list_display = ['pk', 'village', 'district', 'created_time', 'service', 'worker','state']
+    def state(self,obj):
+        return 'fffff'
     inlines = [StartInImageInline, ProtectionImageInline, WorkerSiteImageInline, FinishImageInline]
 
 

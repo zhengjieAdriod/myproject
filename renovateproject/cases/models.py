@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -6,11 +7,11 @@ from django.urls import reverse
 
 
 class Service(models.Model):
-    # ·şÎñÃû³Æ
+    # æœåŠ¡åç§°
     name = models.CharField(max_length=70, blank=True)
-    # ·ÑÓÃ±ê×¼,Èç5Ôª/m2
+    # è´¹ç”¨æ ‡å‡†,å¦‚5å…ƒ/m2
     price = models.PositiveIntegerField(default=0, blank=True)
-    # ÃèÊö,Èç ÊÊÓÃÓÚÇ½ÃæÓĞÇáÎ¢ÁÑ·ìµÈµÈ
+    # æè¿°,å¦‚ é€‚ç”¨äºå¢™é¢æœ‰è½»å¾®è£‚ç¼ç­‰ç­‰
     describe = models.TextField(blank=True)
 
     def __str__(self):
@@ -18,11 +19,11 @@ class Service(models.Model):
 
 
 class Scheme(models.Model):
-    # ·¿¼ä,ÈçÖ÷ÎÔ\³ø·¿\ÎÀÉú¼ä\ÕûÌå
+    # æˆ¿é—´,å¦‚ä¸»å§\å¨æˆ¿\å«ç”Ÿé—´\æ•´ä½“
     room = models.CharField(max_length=70, blank=True)
-    # ÓĞËğ»µµÄ²¿Î»ÃèÊö
+    # æœ‰æŸåçš„éƒ¨ä½æè¿°
     damage_des = models.CharField(max_length=70, blank=True)
-    # Ëğ»µ´¦Àí´ëÊ©
+    # æŸåå¤„ç†æªæ–½
     measures = models.CharField(max_length=70, blank=True)
 
     def __str__(self):
@@ -30,15 +31,15 @@ class Scheme(models.Model):
 
 
 class Worker(models.Model):
-    # ĞÕÃû
+    # å§“å
     name = models.CharField(max_length=70, blank=True)
-    # ÊÖ»úºÅ
+    # æ‰‹æœºå·
     tele = models.CharField(max_length=70, blank=True)
-    # ³õÊ¼ÃÜÂë
+    # åˆå§‹å¯†ç 
     password = models.CharField(max_length=70, blank=True, default='111')
-    # °¸Àı¸öÊı
-    num = models.PositiveIntegerField(default=0, blank=True)  # ×Ö¶ÎµÄÀàĞÍÎª PositiveIntegerField£¬¸ÃÀàĞÍµÄÖµÖ»ÔÊĞíÎªÕıÕûÊı»ò 0
-    # ºÃÆÀ¶È
+    # æ¡ˆä¾‹ä¸ªæ•°
+    num = models.PositiveIntegerField(default=0, blank=True)  # å­—æ®µçš„ç±»å‹ä¸º PositiveIntegerFieldï¼Œè¯¥ç±»å‹çš„å€¼åªå…è®¸ä¸ºæ­£æ•´æ•°æˆ– 0
+    # å¥½è¯„åº¦
     praise = models.CharField(max_length=70, blank=True)
 
     def __str__(self):
@@ -71,38 +72,49 @@ class FinishImage(models.Model):
 
 class Post(models.Model):
     post_imag = models.FileField(upload_to='media/imgs/', blank=True)
-    # Ğ¡ÇøÃû³Æ
+    # å°åŒºåç§°
     village = models.CharField(max_length=70, blank=True)
-    # Î»ÖÃÇøÓò,Èç±±¾©³¯Ñô
-    district = models.CharField(max_length=70, blank=True)
+    DISTRICT_CHOICES = (
+        ("01", 'æœé˜³åŒº'),
+        ("02", 'é€šå·åŒº'),
+        ("03", 'æµ·æ·€åŒº'),
+        ("04", 'ä¸œåŸåŒº'),
+        ("05", 'è¥¿åŸåŒº'),
+        ("06", 'ä¸°å°åŒº'),
+    )
+    # todo ä½ç½®åŒºåŸŸ,å¦‚åŒ—äº¬æœé˜³(åç»­å¯ä»¥å•ç‹¬åšä¸ªè¡¨,æ¥ç®¡ç†åŸå¸‚åŒºåŸŸ)
+    district = models.CharField(max_length=70, blank=True, choices=DISTRICT_CHOICES)
 
-    # Ô¤¼Æ¹¤ÆÚ
+    # é¢„è®¡å·¥æœŸ
     predict = models.CharField(max_length=70, blank=True)
-    # Êµ¼Ê¹¤ÆÚ
+    # å®é™…å·¥æœŸ
     fact = models.CharField(max_length=70, blank=True)
-    # ¿ª¹¤ÈÕÆÚ
+    # å¼€å·¥æ—¥æœŸ
     created_time = models.DateTimeField(null=True, blank=True)
 
-    # ·şÎñÏîÄ¿,ÈçÇáÎ¢Ëğ»µµÄÇ½ÃæË¢ĞÂ
+    # æœåŠ¡é¡¹ç›®,å¦‚è½»å¾®æŸåçš„å¢™é¢åˆ·æ–°
     service = models.ForeignKey(Service, null=True, blank=True)
-    # Ê©¹¤·½°¸,ÈçÖ÷ÎÔÊÒµÄ»ù´¡ĞÔË¢ĞÂ
+    # æ–½å·¥æ–¹æ¡ˆ,å¦‚ä¸»å§å®¤çš„åŸºç¡€æ€§åˆ·æ–°
     scheme = models.ForeignKey(Scheme, null=True, blank=True)
-    # Ê©¹¤¹Ü¼Ò
+    # æ–½å·¥ç®¡å®¶
     worker = models.ForeignKey(Worker, null=True, blank=True)
-
-    # ×´Ì¬,Î´¿ª¹¤\½øĞĞÖĞ\ÒÑÍê¹¤
-    state = models.CharField(max_length=70, blank=True)
+    STATE_CHOICES = (
+        ("01", 'æ–½å·¥ä¸­'),
+        ("02", 'å·²å®Œå·¥'),
+    )
+    # çŠ¶æ€,æœªå¼€å·¥\è¿›è¡Œä¸­\å·²å®Œå·¥
+    state = models.CharField(max_length=70, blank=True, choices=STATE_CHOICES, default="01")
+    # ss = models.ri
     area = models.CharField(max_length=70, blank=True)
 
 
-
     def __str__(self):
-        # python_2_unicode_compatible ×°ÊÎÆ÷ÓÃÓÚ¼æÈİ Python2
+        # python_2_unicode_compatible è£…é¥°å™¨ç”¨äºå…¼å®¹ Python2
         return self.village
 
-    # ×Ô¶¨Òå get_absolute_url ·½·¨
+    # è‡ªå®šä¹‰ get_absolute_url æ–¹æ³•
     def get_absolute_url(self):
-        return reverse('cases:detail-url', kwargs={'pk': self.pk})  # ²ÎÊı1,Ö¸¶¨ÁË·µ»ØµÄÂ·ÓÉÎª,blogÓ¦ÓÃÏÂµÄÃû×ÖÎªdetail-urlµÄÂ·ÓÉ
+        return reverse('cases:detail-url', kwargs={'pk': self.pk})  # å‚æ•°1,æŒ‡å®šäº†è¿”å›çš„è·¯ç”±ä¸º,blogåº”ç”¨ä¸‹çš„åå­—ä¸ºdetail-urlçš„è·¯ç”±
 
     class Meta:
         ordering = ['-created_time']
@@ -110,7 +122,7 @@ class Post(models.Model):
 
 class StartInImage(models.Model):
     des = models.CharField(max_length=70, blank=True, default="photo")
-    path = models.FileField(upload_to='media/imgs/', blank=True)  # todo ÆäÊµÊÇÒ»¸öFiled¶ÔÏó
+    path = models.FileField(upload_to='media/imgs/', blank=True)  # todo å…¶å®æ˜¯ä¸€ä¸ªFiledå¯¹è±¡
     post = models.ForeignKey(Post, null=True, blank=True)
 
     def __str__(self):

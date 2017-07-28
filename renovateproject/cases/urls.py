@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from django.conf.urls import url
 from cases.models import Post
 from . import views

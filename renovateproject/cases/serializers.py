@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from rest_framework import serializers
 from cases.models import Service, Worker, Post, Scheme, StartInImage, ProtectionImage, WorkSiteImage, FinishImage
 

@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from django.forms import forms
 from django.shortcuts import render
 from rest_framework import viewsets
@@ -30,9 +31,6 @@ def get_district_name(district):
     return 0
 
 
-
-
-
 # 条件查询
 @api_view(['GET'])
 @permission_classes((AllowAny,))
@@ -43,6 +41,7 @@ def getPostListByVillage(request):
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 # 条件查询(区域查询)
 @api_view(['GET'])
@@ -60,6 +59,7 @@ def getPostListByBistrict(request, district=1):
             return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 # 分页post列表(讲条件查询写在一起方便客户端操作 todo )
 @api_view(['GET'])
 @permission_classes((AllowAny,))
@@ -68,16 +68,14 @@ def getPostListByPage(request):
         district = request.GET.get('district')
         state = request.GET.get('state')
         post_list = []
-        if district is not None:
+        if district.strip() != '' and state.strip() == '':
             post_list = Post.objects.filter(district=district)
-            pass
-        if state is not None:
+        if district.strip() == '' and state.strip() != '':
             post_list = Post.objects.filter(state=state)
-            pass
-        if state is not None & district is not None:
+        if district.strip() != '' and state.strip() != '':
             post_list = Post.objects.filter(state=state, district=district)
-            pass
-        # post_list = Post.objects.all()
+        if district.strip() == '' and state.strip() == '':
+            post_list = Post.objects.all()
         paginator = Paginator(post_list, 5)  # 每页显示 25 个联系人
         page = request.GET.get('page')
         # page = 0
