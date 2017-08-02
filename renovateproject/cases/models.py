@@ -107,7 +107,7 @@ class Post(models.Model):
     # ss = models.ri
     area = models.CharField(max_length=70, blank=True)
 
-
+    owner = models.ForeignKey('comments.Owner', blank=True, null=True)
     def __str__(self):
         # python_2_unicode_compatible 装饰器用于兼容 Python2
         return self.village

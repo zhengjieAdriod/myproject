@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'', include('cases.urls')),
+    url(r'', include('comments.urls')),
 ]
 # 在开发模式下,为了实现从数据库中拿到的图片路径可以直接访问
 if settings.DEBUG:

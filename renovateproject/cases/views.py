@@ -181,6 +181,7 @@ def save_post(request):
             if 'start_imag' in k:
                 image = StartInImage(des=village + key, path=v)  # todo des字段里一定要有key,便于区分
                 image.save()
+
                 post.startinimage_set.add(image)  # todo 要先保存,然后才能做表之间的关联
             if 'protect_imag' in k:
                 image = ProtectionImage(des=village + key, path=v)
