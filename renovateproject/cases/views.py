@@ -3,7 +3,7 @@ from django.forms import forms
 from django.shortcuts import render
 from rest_framework import viewsets
 from cases.serializers import PostSerializer, StartInImageSerializer, ProtectionImageSerializer, \
-    WorkSiteImageSerializer, FinishImageSerializer, WorkerSerializer
+    WorkSiteImageSerializer, FinishImageSerializer, WorkerSerializer, ServiceSerializer
 from .models import Post, StartInImage, ProtectionImage, WorkSiteImage, FinishImage, Worker, Service
 from django.http import Http404
 from rest_framework.decorators import api_view, permission_classes, detail_route
@@ -395,3 +395,17 @@ def new_password_worker(request):
         except Exception:
             return Response({"code": "305", "msg": "修改失败", "workers": []})
     return Response({"code": "305", "msg": "修改失败", "workers": []})
+
+
+# 获得服务列表
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def get_services(request):
+    if request.method == "GET":
+        try:
+            sevices_db = Service.objects.all()
+            serializer = ServiceSerializer(sevices_db, many=True)
+            return Response({"code": "200", "msg": "成功", "services": serializer.data})
+        except Exception:
+            return Response({"code": "305", "msg": "失败", "services": []})
+    return Response({"code": "305", "msg": "失败", "services": []})
