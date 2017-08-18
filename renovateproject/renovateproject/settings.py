@@ -66,7 +66,10 @@ ROOT_URLCONF = 'renovateproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # todo 告诉django去项目根目录的templates目录找模板
+        # todo 如果此处是默认的未进行配置,则django会去对应的应用下面的templates目录找模板
+        # todo 总结:默认配置下，Django 的模板系统会自动找到app下面的templates文件夹中的模板文件。
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,6 +77,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'renovateproject.context_processor.base_pic_url',
             ],
         },
     },

@@ -42,6 +42,9 @@ class Worker(models.Model):
     # 好评度
     praise = models.CharField(max_length=70, blank=True)
 
+    def get_worker_cases_url(self):
+        return reverse('cases:worker-cases-url', kwargs={'worker_pk': self.pk})
+
     def __str__(self):
         return self.name
 
@@ -108,6 +111,7 @@ class Post(models.Model):
     area = models.CharField(max_length=70, blank=True)
 
     owner = models.ForeignKey('comments.Owner', blank=True, null=True)
+
     def __str__(self):
         # python_2_unicode_compatible 装饰器用于兼容 Python2
         return self.village

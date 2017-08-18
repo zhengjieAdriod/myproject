@@ -1,12 +1,9 @@
 # -*- coding:utf-8 -*-
-from django.conf.urls import url
-from cases.models import Post
-from . import views
 # 下面的是rest framwork 的路由
 from django.conf.urls import url, include
 from rest_framework import routers
 from cases import views
-from rest_framework.urlpatterns import format_suffix_patterns
+from cases import webviews
 
 app_name = 'cases'  # 告诉 django 这个 urls.py 模块是属于 blog 应用的
 
@@ -16,6 +13,11 @@ router.register(r'post_list', views.PostViewSet)
 # router.register(r'post_list/(?P<fact>[0-9]+)/$',views.PostViewSet)
 
 urlpatterns = [
+    # web 页面的数据
+    url(r'^cases/$', webviews.cases),  # 列表
+    # url(r'^admin/$', webviews.index),  # 后台页面
+    url(r'^post/(?P<pk>[0-9]+)/$', webviews.detail, name='detail-url'),  # 参数二:表明该路由指向视图文件下的detail函数.
+    url(r'^cases/(?P<worker_pk>[0-9]+)/$', webviews.cases, name='worker-cases-url'),
 
     url(r'^post_by_page/$', views.getPostListByPage),  # 分页
     url(r'^save_post/$', views.save_post),  # # 增加新的post的接口

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="436dcee2-f49a-4a2c-aeba-6644fae6856d" name="ubuntu_python" url="http://192.168.153.128">
+        <fileTransfer host="192.168.153.128" port="22" rootFolder="/home/zhangjie/work/python_test" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

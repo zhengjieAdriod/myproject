@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% block main %}
+    <style>
+        .out-bg {
+            background-color: #888888;
+            margin-bottom: 10px;
+            border-left: solid 10px #ffffff;
+        }
+
+        .img-show {
+            width: 100%;
+            height: 200px;
+        }
+
+        .box {
+            display: -webkit-flex; /* Safari */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .box-row {
+            display: -webkit-flex; /* Safari */
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+        }
+    </style>
+    <div class="row">
+        {% for post in post_list %}
+            <div class="col-md-6  out-bg box">
+                <a href="{{ post.get_absolute_url }}">
+                    {# base_pic_url来自于自定义的渲染器 #}
+                    <img src="{{ base_pic_url }}{{ post.post_imag }}" class="img-responsive img-show"
+                         alt="Responsive image">
+                    <div style="padding-top: 20px;">
+                        <div class="box-row">
+                            <p>位置:{{ post.district }}&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;</p>
+                            <p>小区:{{ post.village }}</p>
+                        </div>
+                        <div class="box-row">
+                            <p>状态:{{ post.state }}&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;</p>
+                            <p>开工日期:{{ post.created_time }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% empty %}
+            <div class="no-post">暂时还没有发布的案例！</div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        {#    表示内容占1/2屏幕#}
+        <div class="col-md-6  ">
+            <h2>
+                我占用1/2
+            </h2>
+            <p>
+                Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
+                condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis
+                euismod.
+                Donec sed odio dui.
+            </p>
+            <p>
+                <a class="btn" href="#">View details »</a>
+            </p>
+        </div>
+        <div class="col-md-6  ">
+            <h2>
+                我占用1/2
+            </h2>
+            <p>
+                Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
+                condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis
+                euismod.
+                Donec sed odio dui.
+            </p>
+            <p>
+                <a class="btn" href="#">View details »</a>
+            </p>
+        </div>
+        <div class="col-md-6  ">
+            <h2>
+                我占用1/2
+            </h2>
+            <p>
+                Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
+                condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis
+                euismod.
+                Donec sed odio dui.
+            </p>
+            <p>
+                <a class="btn" href="#">View details »</a>
+            </p>
+
+        </div>
+        <div class="col-md-6  ">
+            <h2>
+                我占用1/2
+            </h2>
+            <p>
+                Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
+                condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis
+                euismod.
+                Donec sed odio dui.
+            </p>
+            <p>
+                <a class="btn" href="#">View details »</a>
+            </p>
+
+        </div>
+    </div>
+    <div class="row">
+        {#    表示内容占1/2屏幕#}
+        <div class="col-md-3 ">
+            <h2>
+                我占用1/4
+            </h2>
+            <p>
+                Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
+                condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis
+                euismod.
+                Donec sed odio dui.
+            </p>
+            <p>
+                <a class="btn" href="#">View details »</a>
+            </p>
+        </div>
+        <div class="col-md-3 ">
+            <h2>
+                我占用1/4
+            </h2>
+            <p>
+                Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
+                condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis
+                euismod.
+                Donec sed odio dui.
+            </p>
+            <p>
+                <a class="btn" href="#">View details »</a>
+            </p>
+        </div>
+        <div class="col-md-3 ">
+            <h2>
+                我占用1/4
+            </h2>
+            <p>
+                Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
+                condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis
+                euismod.
+                Donec sed odio dui.
+            </p>
+            <p>
+                <a class="btn" href="#">View details »</a>
+            </p>
+
+        </div>
+        <div class="col-md-3 ">
+            <h2>
+                我占用1/4
+            </h2>
+            <p>
+                Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
+                condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis
+                euismod.
+                Donec sed odio dui.
+            </p>
+            <p>
+                <a class="btn" href="#">View details »</a>
+            </p>
+
+        </div>
+        <div class="col-md-3 ">
+            <h2>
+                我占用1/4
+            </h2>
+            <p>
+                Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
+                condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis
+                euismod.
+                Donec sed odio dui.
+            </p>
+            <p>
+                <a class="btn" href="#">View details »</a>
+            </p>
+
+        </div>
+        <div class="col-md-3 ">
+            <h2>
+                我占用1/4
+            </h2>
+            <p>
+                Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
+                condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis
+                euismod.
+                Donec sed odio dui.
+            </p>
+            <p>
+                <a class="btn" href="#">View details »</a>
+            </p>
+
+        </div>
+    </div>
+{% endblock main %}
+{#侧边栏内容#}
+{% block div %}
+    <p style="border-left:1px solid black;background-color: #5bc0de;max-height: 100%;">我是侧边栏</p>
+{% endblock div %}

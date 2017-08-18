@@ -163,6 +163,8 @@ def save_post(request):
         worker_dic = post_dic['worker']
         worker_pk = worker_dic['pk']
         worker_db = Worker.objects.get(pk=worker_pk)
+        # todo 增加worker名下的案例数量
+        worker_db.num = int(worker_db.num) + 1
         service_dic = post_dic['service']
         service_name = service_dic['name']
         service = Service.objects.get(name=service_name)

@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+<!-- 导入静态文件夹 -->
+{% load staticfiles %}
+{% block main %}
+    <style>
+        .side-worker {
+            padding-top: 20px;
+            background-color: #29de1e;
+            margin-top: 92px;
+        }
+
+        .nav-top {
+            width: 100%;
+            margin-top: 91px;
+            background-color: #fff;
+        }
+
+        .nav-location {
+            height: 500px;
+            width: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            margin-top: 50px;
+        }
+
+        .process-pic {
+            width: 300px;
+            margin-right: 2px;
+            margin-top: 2px;
+        }
+    </style>
+    <nav id="navbar-example" class="navbar navbar-default navbar-static navbar-fixed-top nav-top" role="navigation">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <li id="info-click" style=""><a href="#info">基本信息</a></li>
+                <li id="process-click"><a href="#process">施工过程</a></li>
+                <li id="commit-click"><a href="#commit">业主评论</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div id="scroll" class="col-md-6  nav-location" data-spy="scroll" data-target="#navbar-example" data-offset="0">
+        <h4 id="info">基本信息</h4>
+        <div style="display: flex;">
+            <img src="{{ base_pic_url }}{{ post.post_imag }}" class="img-responsive " alt="Responsive image">
+            <div>
+                <p>位置:{{ post.district }}</p>
+                <p>小区:{{ post.village }}</p>
+                <p>状态:{{ post.state }}&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;</p>
+                <p>开工日期:{{ post.created_time }}</p>
+            </div>
+        </div>
+        <h4 id="process">施工过程</h4>
+        <div style="display: inline-flex; flex-wrap:wrap;">
+            <img src="{{ base_pic_url }}{{ post.post_imag }}"
+                 class="img-responsive process-pic "
+                 alt="Responsive image">
+            <img src="{{ base_pic_url }}{{ post.post_imag }}" class="img-responsive process-pic "
+                 alt="Responsive image">
+            <img src="{{ base_pic_url }}{{ post.post_imag }}" class="img-responsive process-pic "
+                 alt="Responsive image">
+            <img src="{{ base_pic_url }}{{ post.post_imag }}" class="img-responsive process-pic "
+                 alt="Responsive image">
+        </div>
+        <h4 id="commit">用户评论</h4>
+        <div style="display: inline-flex; flex-wrap:wrap;">
+            <img src="{{ base_pic_url }}{{ post.post_imag }}"
+                 class="img-responsive process-pic "
+                 alt="Responsive image">
+            <img src="{{ base_pic_url }}{{ post.post_imag }}" class="img-responsive process-pic "
+                 alt="Responsive image">
+            <img src="{{ base_pic_url }}{{ post.post_imag }}" class="img-responsive process-pic "
+                 alt="Responsive image">
+            <img src="{{ base_pic_url }}{{ post.post_imag }}" class="img-responsive process-pic "
+                 alt="Responsive image">
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#scroll').scrollspy({target: '#navbar-example'});
+            var cc = 0;
+            $("#info-click").click(function () {
+                cc = $("#info").offset().top;
+                console.info("基本" + cc)
+                $("#scroll").animate({
+                    scrollTop: $("#info").offset().top - 90
+                }, {duration: 500, easing: "swing"}, function () {
+                    $("#info-click").addClass("active");
+                    $("#process-click").removeClass("active");
+                    $("#commit-click").removeClass("active");
+
+                });
+                return false;
+            });
+            $("#process-click").click(function () {
+                cc = $("#process").offset().top;
+                console.info("施工" + cc)
+                $("#scroll").animate({
+                    scrollTop: $("#process").offset().top - 90
+                }, {duration: 500, easing: "swing"}, function () {
+                    $("#info-click").removeClass("active");
+                    $("#process-click").addClass("active");
+                    $("#commit-click").removeClass("active");
+                });
+                return false;
+            });
+            $("#commit-click").click(function () {
+                cc = $("#commit").offset().top;
+                console.info("评论" + cc);
+                $("#scroll").animate({
+                    scrollTop: $("#commit").offset().top - 150
+                }, {duration: 900, easing: "swing",}, function () {
+                    $("#commit-click").addClass("active");
+                    $("#info-click").removeClass("active");
+                    $("#process-click").removeClass("active");
+                });
+                return false;
+            });
+        });
+    </script>
+{% endblock main %}
+{#侧边栏内容#}
+{% block div %}
+    <div class="text-center side-worker">
+        <img src="{% static 'imgs/head.png' %}"/>
+        <p>姓名:{{ post.worker.name }}</p>
+        <p>好评度:{{ post.worker.praise }}</p>
+        <a class="btn btn-success" href="{{ post.worker.get_worker_cases_url }}">查看案例({{ post.worker.num }}个)</a>
+    </div>
+{% endblock div %}

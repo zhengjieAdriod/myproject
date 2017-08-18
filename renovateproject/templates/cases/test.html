@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Bootstrap 实例 - 滚动监听（Scrollspy）插件</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<style>
+    .side-worker {
+        padding-top: 20px;
+        background-color: #29de1e;
+        margin-top: 92px;
+    }
+
+    .nav-top {
+        width: 100%;
+        margin-top: 91px;
+        background-color: #fff;
+    }
+
+    .nav-location {
+        height: 500px;
+        width: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        position: relative;
+        margin-top: 50px;
+    }
+
+    .process-pic {
+        width: 300px;
+        margin-right: 2px;
+        margin-top: 2px;
+    }
+
+    .img {
+        height: 300px;
+        width: 200px;
+    }
+</style>
+<body>
+
+<nav id="navbar-example" class="navbar navbar-default navbar-static navbar-fixed-top nav-top" role="navigation">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li id="info-click" ><a href="#info">基本信息</a></li>
+            <li id="process-click"><a href="#process">施工过程</a></li>
+            <li id="commit-click"><a href="#commit">业主评论</a></li>
+        </ul>
+    </div>
+</nav>
+<div id="scroll" class="col-md-6  nav-location" data-spy="scroll" data-target="#navbar-example" data-offset="0">
+    <h4 id="info">基本信息</h4>
+    <div style="display: flex;">
+        <img style="width: 300px; height: 273px;"
+             src="head.png"
+             class="img-responsive " alt="Responsive image">
+        <div>
+            <p>位置:{{ post.district }}</p>
+            <p>小区:{{ post.village }}</p>
+            <p>状态:{{ post.state }}&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;</p>
+            <p>开工日期:{{ post.created_time }}</p>
+        </div>
+    </div>
+    <h4 id="process">施工过程</h4>
+    <div style="display: inline-flex; flex-wrap:wrap;">
+        <img style="width: 300px; height: 273px;" src="head.png"
+             class="img-responsive process-pic "
+             alt="Responsive image">
+        <img style="width: 300px; height: 273px;" src="head.png"
+             class="img-responsive process-pic "
+             alt="Responsive image">
+        <img style="width: 300px; height: 273px;" src="head.png"
+             class="img-responsive process-pic "
+             alt="Responsive image">
+        <img style="width: 300px; height: 273px;" src="head.png"
+             class="img-responsive process-pic "
+             alt="Responsive image">
+    </div>
+    <h4 id="commit">用户评论</h4>
+    <div style="display: inline-flex; flex-wrap:wrap;">
+        <img style="width: 300px; height: 273px;" src="head.png"
+             class="img-responsive process-pic "
+             alt="Responsive image">
+        <img style="width: 300px; height: 273px;" src="head.png"
+             class="img-responsive process-pic "
+             alt="Responsive image">
+        <img style="width: 300px; height: 273px;" src="head.png"
+             class="img-responsive process-pic "
+             alt="Responsive image">
+        <img style="width: 300px; height: 273px;" src="head.png"
+             class="img-responsive process-pic "
+             alt="Responsive image">
+    </div>
+</div>
+
+
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#info-click").click(function () {
+            var cc = $("#info").offset().top;
+            console.info("基本" + cc)
+            $("#scroll").animate({
+                scrollTop: $("#info").offset().top - 150
+            }, {duration: 500, easing: "swing"}, function () {
+            });
+            return true;
+        });
+        $("#process-click").click(function () {
+            var cc = $("#process").offset().top;
+            console.info("施工" + cc)
+            $("#scroll").animate({
+                scrollTop: $("#process").offset().top - 150
+            }, {duration: 500, easing: "swing"}, function () {
+            });
+            return true;
+        });
+        $("#commit-click").click(function () {
+            {#            var cc = $("#commit").offset().top;#}
+            {#            console.info("评论" + cc)#}
+            {#            $("#scroll").animate({#}
+            {#                scrollTop: $("#commit").offset().top - 150#}
+            {#            }, {duration: 900, easing: "swing",}, function () {#}
+            {#            });#}
+            return true;
+        });
+    });
+</script>
+</html>
