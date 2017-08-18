@@ -20,4 +20,5 @@ def cases(request, worker_pk=0):
 
 def detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    post.finishimage_set
     return render(request, 'cases/detail.html', context={'post': post})

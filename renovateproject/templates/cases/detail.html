@@ -11,7 +11,6 @@
 
         .nav-top {
             width: 100%;
-            margin-top: 91px;
             background-color: #fff;
         }
 
@@ -21,13 +20,45 @@
             overflow-y: auto;
             overflow-x: hidden;
             position: relative;
-            margin-top: 50px;
+            margin-top: 60px;
+            background-color: #e2efe6;
         }
 
         .process-pic {
-            width: 300px;
-            margin-right: 2px;
+            height: 300px;
+            margin-right: 10px;
             margin-top: 2px;
+        }
+
+        .area-div {
+            display: inline-flex;
+            flex-wrap: wrap;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .area-info {
+            display: flex;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .text-item {
+            margin-top: 20px;
+            padding-top: 10px;
+        }
+
+        .comment-div {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 5px;
+            height: 100px;
+            padding: 15px;;
+            background-color: #fff;
+            border-radius: 10px;
         }
     </style>
     <nav id="navbar-example" class="navbar navbar-default navbar-static navbar-fixed-top nav-top" role="navigation">
@@ -40,8 +71,8 @@
         </div>
     </nav>
     <div id="scroll" class="col-md-6  nav-location" data-spy="scroll" data-target="#navbar-example" data-offset="0">
-        <h4 id="info">基本信息</h4>
-        <div style="display: flex;">
+        <h4 id="info" style="padding-top: 20px;">基本信息</h4>
+        <div class="area-info">
             <img src="{{ base_pic_url }}{{ post.post_imag }}" class="img-responsive " alt="Responsive image">
             <div>
                 <p>位置:{{ post.district }}</p>
@@ -50,34 +81,72 @@
                 <p>开工日期:{{ post.created_time }}</p>
             </div>
         </div>
-        <h4 id="process">施工过程</h4>
-        <div style="display: inline-flex; flex-wrap:wrap;">
-            <img src="{{ base_pic_url }}{{ post.post_imag }}"
-                 class="img-responsive process-pic "
-                 alt="Responsive image">
-            <img src="{{ base_pic_url }}{{ post.post_imag }}" class="img-responsive process-pic "
-                 alt="Responsive image">
-            <img src="{{ base_pic_url }}{{ post.post_imag }}" class="img-responsive process-pic "
-                 alt="Responsive image">
-            <img src="{{ base_pic_url }}{{ post.post_imag }}" class="img-responsive process-pic "
-                 alt="Responsive image">
+        <h4 id="process" style="padding-top: 20px;">施工过程</h4>
+        <h5 class="text-item">开工进厂</h5>
+        <div class="area-div">
+            {% for start_image in post.startinimage_set.all %}
+                <img src="{{ base_pic_url }}{{ start_image.path }}"
+                     class="img-responsive process-pic "
+                     alt="Responsive image">
+            {% empty %}
+                <div class="no-post">暂时还没有发布的案例！</div>
+            {% endfor %}
         </div>
-        <h4 id="commit">用户评论</h4>
-        <div style="display: inline-flex; flex-wrap:wrap;">
-            <img src="{{ base_pic_url }}{{ post.post_imag }}"
-                 class="img-responsive process-pic "
-                 alt="Responsive image">
-            <img src="{{ base_pic_url }}{{ post.post_imag }}" class="img-responsive process-pic "
-                 alt="Responsive image">
-            <img src="{{ base_pic_url }}{{ post.post_imag }}" class="img-responsive process-pic "
-                 alt="Responsive image">
-            <img src="{{ base_pic_url }}{{ post.post_imag }}" class="img-responsive process-pic "
-                 alt="Responsive image">
+        <h5 class="text-item">遮蔽保护</h5>
+        <div class="area-div">
+            {% for protect_image in post.protectionimage_set.all %}
+                <img src="{{ base_pic_url }}{{ protect_image.path }}"
+                     class="img-responsive process-pic "
+                     alt="Responsive image">
+            {% empty %}
+                <div class="no-post">暂时还没有发布的案例！</div>
+            {% endfor %}
+        </div>
+        <h5 class="text-item">施工现场</h5>
+        <div class="area-div">
+            {% for work_site_image in post.worksiteimage_set.all %}
+                <img src="{{ base_pic_url }}{{ work_site_image.path }}"
+                     class="img-responsive process-pic "
+                     alt="Responsive image">
+            {% empty %}
+                <div class="no-post">暂时还没有发布的案例！</div>
+            {% endfor %}
+        </div>
+        <h5 class="text-item">完工验收</h5>
+        <div class="area-div">
+            {% for finish_image in post.finishimage_set.all %}
+                <img src="{{ base_pic_url }}{{ finish_image.path }}"
+                     class="img-responsive process-pic "
+                     alt="Responsive image">
+            {% empty %}
+                <div class="no-post">暂时还没有发布的案例！</div>
+            {% endfor %}
+        </div>
+        <h4 id="commit" style="padding-top: 20px;">用户评论</h4>
+        <div>
+            {% for comment in post.comment_set.all %}
+                <div class="comment-div">
+                    <div>
+                        {{ comment.telephone }}
+                    </div>
+                    <div style="align-self: center;">
+                        {{ comment.text }}gdfgdfssssfgggggggggggggggg你好
+                    </div>
+                    <div style="align-self: flex-end;">
+                        {{ comment.created_time }}
+                    </div>
+
+                </div>
+            {% empty %}
+                <div class="no-post">暂时还没有发布的案例！</div>
+            {% endfor %}
         </div>
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
+            {#            bootstap 要求的方法  为了联动#}
             $('#scroll').scrollspy({target: '#navbar-example'});
+            $('#header-f').remove();
             var cc = 0;
             $("#info-click").click(function () {
                 cc = $("#info").offset().top;
