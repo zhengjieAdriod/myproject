@@ -26,9 +26,11 @@ class FinishImageInline(admin.StackedInline):
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['pk', 'village', 'district', 'created_time', 'service', 'worker','state']
-    def state(self,obj):
+    list_display = ['pk', 'village', 'district', 'created_time', 'service', 'worker', 'state']
+
+    def state(self, obj):
         return 'fffff'
+
     inlines = [StartInImageInline, ProtectionImageInline, WorkerSiteImageInline, FinishImageInline]
 
 
@@ -36,8 +38,18 @@ class ServiceAdmin(admin.ModelAdmin):
     list_display = ['name', 'price', 'describe']
 
 
+class ServiceInline(admin.StackedInline):
+    model = Service
+
+    def state(self, obj):
+        return 'fffff'
+
+    extra = 0
+
+
 class WorkerAdmin(admin.ModelAdmin):
     list_display = ['pk', 'name']
+    inlines = [ServiceInline]
 
 
 admin.site.register(Post, PostAdmin)

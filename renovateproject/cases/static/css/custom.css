@@ -99,9 +99,12 @@ figure {
  */
 
 #site-header {
-	background-color: #FFF;
-	padding: 25px 20px;
-	margin-bottom: 40px;
+	display: flex;
+	flex-direction: column;
+	height: 60px;
+	padding-left: 100px;
+	padding-top: 10px;
+	background-color: #a2ddff;
 	border-bottom: 1px solid #e7e7e7;
 }
 .copyrights{text-indent:-9999px;height:0;line-height:0;font-size:0;overflow:hidden;}

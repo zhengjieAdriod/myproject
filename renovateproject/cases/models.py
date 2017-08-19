@@ -6,18 +6,6 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 
-class Service(models.Model):
-    # 服务名称
-    name = models.CharField(max_length=70, blank=True)
-    # 费用标准,如5元/m2
-    price = models.PositiveIntegerField(default=0, blank=True)
-    # 描述,如 适用于墙面有轻微裂缝等等
-    describe = models.TextField(blank=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Scheme(models.Model):
     # 房间,如主卧\厨房\卫生间\整体
     room = models.CharField(max_length=70, blank=True)
@@ -49,28 +37,18 @@ class Worker(models.Model):
         return self.name
 
 
-class ProtectionImage(models.Model):
-    des = models.CharField(max_length=70, blank=True)
-    path = models.FileField(upload_to='./cases/static/imgs/', blank=True)
+# worker可以发布自己的产品
+class Service(models.Model):
+    worker = models.ForeignKey(Worker, null=True, blank=True)
+    # 服务名称
+    name = models.CharField(max_length=70, blank=True)
+    # 费用标准,如5元/m2
+    price = models.PositiveIntegerField(default=0, blank=True)
+    # 描述,如 适用于墙面有轻微裂缝等等
+    describe = models.TextField(blank=True)
 
     def __str__(self):
-        return self.des
-
-
-class WorkSiteImage(models.Model):
-    des = models.CharField(max_length=70, blank=True)
-    path = models.FileField(upload_to='./cases/static/imgs/', blank=True)
-
-    def __str__(self):
-        return self.des
-
-
-class FinishImage(models.Model):
-    des = models.CharField(max_length=70, blank=True)
-    path = models.FileField(upload_to='./cases/static/imgs/', blank=True)
-
-    def __str__(self):
-        return self.des
+        return self.name
 
 
 class Post(models.Model):

@@ -4,22 +4,25 @@
 {% block main %}
     <style>
         .side-worker {
+            width: 200px;
+            height: 300px;
+            position: fixed;
             padding-top: 20px;
             background-color: #29de1e;
-            margin-top: 92px;
+            margin-top: 120px;
         }
 
         .nav-top {
+            top: 60px;
             width: 100%;
-            background-color: #fff;
+            padding-left: 100px;
+            border: solid 1px #3253ff;
+            margin-left: 0px;
         }
 
         .nav-location {
-            height: 500px;
-            width: 100%;
-            overflow-y: auto;
-            overflow-x: hidden;
             position: relative;
+            width: 100%;
             margin-top: 60px;
             background-color: #e2efe6;
         }
@@ -52,10 +55,9 @@
 
         .comment-div {
             display: flex;
+            flex-direction: column;
             flex-wrap: wrap;
-            justify-content: space-between;
             margin-top: 5px;
-            height: 100px;
             padding: 15px;;
             background-color: #fff;
             border-radius: 10px;
@@ -63,15 +65,16 @@
     </style>
     <nav id="navbar-example" class="navbar navbar-default navbar-static navbar-fixed-top nav-top" role="navigation">
         <div class="container-fluid">
-            <ul class="nav navbar-nav">
-                <li id="info-click" style=""><a href="#info">基本信息</a></li>
+            <ul class="nav navbar-nav" style="display: flex;align-content: center;">
+                <li id="info-click"><a href="#info">基本信息</a></li>
                 <li id="process-click"><a href="#process">施工过程</a></li>
                 <li id="commit-click"><a href="#commit">业主评论</a></li>
             </ul>
         </div>
     </nav>
     <div id="scroll" class="col-md-6  nav-location" data-spy="scroll" data-target="#navbar-example" data-offset="0">
-        <h4 id="info" style="padding-top: 20px;">基本信息</h4>
+        {#        <div style="height: 20px;margin-top: 10px;padding:30px;background-color: #fff;">我石头 </div>#}
+        <h3 id="info" style="padding-top: 60px;padding-bottom: 20px;">基本信息</h3>
         <div class="area-info">
             <img src="{{ base_pic_url }}{{ post.post_imag }}" class="img-responsive " alt="Responsive image">
             <div>
@@ -81,7 +84,7 @@
                 <p>开工日期:{{ post.created_time }}</p>
             </div>
         </div>
-        <h4 id="process" style="padding-top: 20px;">施工过程</h4>
+        <h3 id="process" style="padding-top: 80px;">施工过程</h3>
         <h5 class="text-item">开工进厂</h5>
         <div class="area-div">
             {% for start_image in post.startinimage_set.all %}
@@ -122,15 +125,16 @@
                 <div class="no-post">暂时还没有发布的案例！</div>
             {% endfor %}
         </div>
-        <h4 id="commit" style="padding-top: 20px;">用户评论</h4>
-        <div>
+        <h3 id="commit" style="padding-top: 80px;padding-bottom: 20px;">业主评论</h3>
+        <div style="margin-bottom: 20px;">
             {% for comment in post.comment_set.all %}
                 <div class="comment-div">
                     <div>
                         {{ comment.telephone }}
                     </div>
-                    <div style="align-self: center;">
-                        {{ comment.text }}gdfgdfssssfgggggggggggggggg你好
+                    {#todo div的 自动换行：http://www.cnblogs.com/Chenshuai7/p/5271466.html#}
+                    <div style="padding-left: 20px;word-wrap:break-word;padding-right: 30px;">
+                        {{ comment.text }}
                     </div>
                     <div style="align-self: flex-end;">
                         {{ comment.created_time }}
@@ -145,43 +149,41 @@
     <script type="text/javascript">
         $(document).ready(function () {
             {#            bootstap 要求的方法  为了联动#}
-            $('#scroll').scrollspy({target: '#navbar-example'});
-            $('#header-f').remove();
+            $('body,html').scrollspy({target: '#navbar-example'});
+            console.info("初始化");
+            {#            $('#header-f').remove();#}
+
+            //初始化整个页面的位置，目的是由位置决定nav的选项为第一个基本信息
+            $("html", "body").animate({
+                scrollTop: $("#info").offset().top - 10 + 50
+            }, {duration: 100, easing: "swing"});
             var cc = 0;
             $("#info-click").click(function () {
                 cc = $("#info").offset().top;
-                console.info("基本" + cc)
-                $("#scroll").animate({
-                    scrollTop: $("#info").offset().top - 90
+                console.info("基本" + cc);
+                //为了兼容火狐
+                $("body,html").animate({
+                    scrollTop: cc - 10
                 }, {duration: 500, easing: "swing"}, function () {
-                    $("#info-click").addClass("active");
-                    $("#process-click").removeClass("active");
-                    $("#commit-click").removeClass("active");
-
                 });
                 return false;
             });
             $("#process-click").click(function () {
+                console.info("施工" + cc);
                 cc = $("#process").offset().top;
-                console.info("施工" + cc)
-                $("#scroll").animate({
-                    scrollTop: $("#process").offset().top - 90
+
+                $("body,html").animate({
+                    scrollTop: cc
                 }, {duration: 500, easing: "swing"}, function () {
-                    $("#info-click").removeClass("active");
-                    $("#process-click").addClass("active");
-                    $("#commit-click").removeClass("active");
                 });
                 return false;
             });
             $("#commit-click").click(function () {
                 cc = $("#commit").offset().top;
                 console.info("评论" + cc);
-                $("#scroll").animate({
-                    scrollTop: $("#commit").offset().top - 150
+                $("body,html").animate({
+                    scrollTop: cc
                 }, {duration: 900, easing: "swing",}, function () {
-                    $("#commit-click").addClass("active");
-                    $("#info-click").removeClass("active");
-                    $("#process-click").removeClass("active");
                 });
                 return false;
             });
@@ -191,6 +193,7 @@
 {#侧边栏内容#}
 {% block div %}
     <div class="text-center side-worker">
+        <h3 style="color: #361384">施工管家</h3>
         <img src="{% static 'imgs/head.png' %}"/>
         <p>姓名:{{ post.worker.name }}</p>
         <p>好评度:{{ post.worker.praise }}</p>
