@@ -154,8 +154,8 @@
             {#            $('#header-f').remove();#}
 
             //初始化整个页面的位置，目的是由位置决定nav的选项为第一个基本信息
-            $("html", "body").animate({
-                scrollTop: $("#info").offset().top - 10 + 50
+            $("html, body").animate({
+                scrollTop: $("#info").offset().top - 10
             }, {duration: 100, easing: "swing"});
             var cc = 0;
             $("#info-click").click(function () {
