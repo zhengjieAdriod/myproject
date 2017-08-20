@@ -1,4 +1,11 @@
 fdfdfdsfasdf
 
-???????????
-http://www.cnblogs.com/xxcanghai/p/5015712.html
+1，滚动兼容问题
+    http://www.cnblogs.com/xxcanghai/p/5015712.html
+
+
+
+2，自定义标签，传递参数
+    这两天学着写了个 Django 的 tag，这个 tag 叫做 "post_detail_tag", 调用的代码像这样：
+    {% post_detail_tag post.id current_post_id %}
+    其中后面两个都是传递的变量。
