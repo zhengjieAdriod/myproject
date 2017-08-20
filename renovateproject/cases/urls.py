@@ -18,6 +18,7 @@ urlpatterns = [
     # url(r'^admin/$', webviews.index),  # 后台页面
     url(r'^post/(?P<pk>[0-9]+)/$', webviews.detail, name='detail-url'),  # 参数二:表明该路由指向视图文件下的detail函数.
     url(r'^cases/(?P<worker_pk>[0-9]+)/$', webviews.cases, name='worker-cases-url'),
+    url(r'^service/(?P<worker_pk>[0-9]+)/$', webviews.service_of_worker, name='worker_service-url'),
 
     url(r'^post_by_page/$', views.getPostListByPage),  # 分页
     url(r'^save_post/$', views.save_post),  # # 增加新的post的接口

@@ -33,6 +33,9 @@ class Worker(models.Model):
     def get_worker_cases_url(self):
         return reverse('cases:worker-cases-url', kwargs={'worker_pk': self.pk})
 
+    def get_worker_service_url(self):
+        return reverse('cases:worker_service-url', kwargs={'worker_pk': self.pk})
+
     def __str__(self):
         return self.name
 

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 <!-- 导入静态文件夹 -->
 {% load staticfiles %}
+{% load production_tags %}
 {% block main %}
     <style>
         .side-worker {
@@ -193,10 +194,14 @@
 {#侧边栏内容#}
 {% block div %}
     <div class="text-center side-worker">
-        <h3 style="color: #361384">施工管家</h3>
-        <img src="{% static 'imgs/head.png' %}"/>
-        <p>姓名:{{ post.worker.name }}</p>
-        <p>好评度:{{ post.worker.praise }}</p>
+        <a href="{{ post.worker.get_worker_service_url }}">
+            <h3 style="color: #361384">施工管家</h3>
+            <img src="{% static 'imgs/head.png' %}"/>
+            <p>姓名:{{ post.worker.name }}</p>
+            <p>好评度:{{ post.worker.praise }}</p>
+        </a>
         <a class="btn btn-success" href="{{ post.worker.get_worker_cases_url }}">查看案例({{ post.worker.num }}个)</a>
+
     </div>
+
 {% endblock div %}

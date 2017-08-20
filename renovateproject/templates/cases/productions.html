@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+<!-- 导入静态文件夹 -->
+{% load staticfiles %}
+{% load production_tags %}
+{% block main %}
+    <div style="margin-top: 300px;">
+        {% get_worker_production worker_pk as productions %}
+        <ul>
+            {% for production in productions %}
+                <li>
+                    {{ production.name }}
+                </li>
+            {% empty %}
+                暂无服务！
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock main %}

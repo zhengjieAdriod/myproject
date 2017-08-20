@@ -20,9 +20,8 @@ def cases(request, worker_pk=0):
 
 def detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    var = post.finishimage_set.all()
-    ff = var[0]
-    dd = ff.path
-    df = str(dd)
-    ppl = post.post_imag
     return render(request, 'cases/detail.html', context={'post': post})
+
+
+def service_of_worker(request, worker_pk):
+    return render(request, 'cases/productions.html', context={'worker_pk': worker_pk})
