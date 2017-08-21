@@ -2,7 +2,13 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Service, Scheme, Worker, Post, StartInImage, ProtectionImage, WorkSiteImage, FinishImage
+from .models import Service, Scheme, Worker, Post, StartInImage, ProtectionImage, WorkSiteImage, FinishImage, \
+    SchemeInService
+
+
+class SchemeInServiceInline(admin.StackedInline):
+    model = SchemeInService
+    extra = 0
 
 
 class StartInImageInline(admin.StackedInline):
@@ -36,6 +42,7 @@ class PostAdmin(admin.ModelAdmin):
 
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ['name', 'price', 'describe']
+    inlines = [SchemeInServiceInline]
 
 
 class ServiceInline(admin.StackedInline):
@@ -56,7 +63,3 @@ admin.site.register(Post, PostAdmin)
 admin.site.register(Service, ServiceAdmin)
 admin.site.register(Scheme)
 admin.site.register(Worker, WorkerAdmin)
-# admin.site.register(StartInImage)
-# admin.site.register(ProtectionImage)
-# admin.site.register(WorkSiteImage)
-# admin.site.register(FinishImage)

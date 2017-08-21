@@ -42,12 +42,32 @@ class Worker(models.Model):
 
 # worker可以发布自己的产品
 class Service(models.Model):
+    image = models.FileField(upload_to='media/imgs/', blank=True)
     worker = models.ForeignKey(Worker, null=True, blank=True)
-    # 服务名称
     name = models.CharField(max_length=70, blank=True)
     # 费用标准,如5元/m2
     price = models.PositiveIntegerField(default=0, blank=True)
-    # 描述,如 适用于墙面有轻微裂缝等等
+    # 服务范围,如 墙面, 水电 等
+    describe = models.TextField(blank=True)
+    # 服务区域, 如北京通州, 北京朝阳
+    scope = models.CharField(max_length=70, blank=True)
+
+    # 自定义 get_absolute_url 方法
+    def get_absolute_url(self):
+        return reverse('cases:service_detail-url', kwargs={'service_pk': self.pk})
+
+    def __str__(self):
+        return self.name
+
+
+# 同一个服务中不同价格的子服务(同一个服务中的个性化服务)
+class SchemeInService(models.Model):
+    image = models.FileField(upload_to='media/imgs/', blank=True)
+    Service = models.ForeignKey(Service, null=True, blank=True)
+    name = models.CharField(max_length=70, blank=True)
+    # 费用标准,如5元/m2
+    price = models.PositiveIntegerField(default=0, blank=True)
+    # 简单描述
     describe = models.TextField(blank=True)
 
     def __str__(self):

@@ -13,6 +13,8 @@ class Comment(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     post = models.ForeignKey('cases.Post')
     call_back = models.TextField(blank=True, null=True)
+    # 施工管家
+    worker = models.ForeignKey('cases.Worker', null=True, blank=True)
 
     def __str__(self):
         return self.text[:20]
@@ -29,3 +31,6 @@ class Owner(models.Model):
 
     def __str__(self):
         return self.telephone[:10]
+
+
+

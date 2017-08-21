@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+<!-- 导入静态文件夹 -->
+{% load staticfiles %}
+{% load production_tags %}
+{% block main %}
+    <style>
+        .nav-top {
+            top: 60px;
+            width: 100%;
+            padding-left: 100px;
+            border: solid 1px #3253ff;
+            margin-left: 0px;
+        }
+
+        .area-div {
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+        }
+
+        .comment-div {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            margin-top: 5px;
+            padding: 15px;;
+            background-color: #aea81f;
+            border-radius: 10px;
+        }
+
+        .text-color {
+            color: #fff;
+            background-color: #e73643;
+            padding: 10px;
+        }
+
+        .input-alert {
+            height: 30px;
+
+        }
+
+        .btn-alert {
+            height: 30px;
+
+        }
+
+    </style>
+    <nav id="navbar-example" class="navbar navbar-default navbar-static navbar-fixed-top nav-top" role="navigation">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav" style="display: flex;align-content: center;">
+                <li id="info-click"><a href="#info">个性化施工方案</a></li>
+                <li id="process-click"><a href="#process">服务流程</a></li>
+                <li id="commit-click"><a href="#commit">经典案例</a></li>
+                <li id="post-click"><a href="#post">售后保障</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div style="background-color: #e2efe6;">
+        <h4 style="margin-top: 120px;padding-left: 20px;padding-top: 10px;">个性化施工方案:</h4>
+        <div class="row area-div">
+            {% for service in scheme_in_services %}
+                <div class="col-md-4  out-bg box">
+                    {# base_pic_url来自于自定义的渲染器 #}
+                    <img src="{{ base_pic_url }}{{ service.image }}" class="img-responsive img-show"
+                         alt="Responsive image">
+                    <div style="padding-top: 20px;">
+                        <div class="box-row">
+                            <p>服务名称:{{ service.name }} </p>
+                            <p>服务简介:{{ service.describe }}</p>
+                        </div>
+                        <div class="box-row">
+                            <p>参考价格:{{ service.price }}</p>
+                        </div>
+                        <a type="button" class="order btn btn-warning" data-toggle="modal"
+                           data-target="#myModal">立即预约</a>
+                    </div>
+                </div>
+
+            {% empty %}
+                <div class="no-post">暂时还没有施工方案！</div>
+            {% endfor %}
+
+        </div>
+
+        <h4 style="margin-top: 20px;padding-left: 20px;">服务流程:</h4>
+        <div class="row area-div">
+            提交需求====快速响应=====上面测量===签合同交付定金===施工===验收满意交付尾款===售后一年保障
+        </div>
+        <h4 style="margin-top: 20px;padding-left: 20px;">经典案例:</h4>
+        <div class="row area-div">
+            {% for post in service.post_set.all %}
+                <div class="col-md-6  out-bg box">
+                    <a href="{{ post.get_absolute_url }}">
+                        {# base_pic_url来自于自定义的渲染器 #}
+                        <img src="{{ base_pic_url }}{{ post.post_imag }}" class="img-responsive img-show"
+                             alt="Responsive image">
+                        <div style="padding-top: 20px;">
+                            <div class="box-row">
+                                <p>位置:{{ post.district }}&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;</p>
+                                <p>小区:{{ post.village }}</p>
+                            </div>
+                            <div class="box-row">
+                                <p>状态:{{ post.state }}&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;</p>
+                                <p>开工日期:{{ post.created_time }}</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% empty %}
+                <div class="no-post">暂时还没有施工方案！</div>
+            {% endfor %}
+        </div>
+        <h4 id="post" style="margin-top: 20px;padding-left: 20px;">售后保障:</h4>
+        <div class="row area-div">
+            售后保障简介
+        </div>
+    </div>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">立即预约</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <input style="height: 50px;" type="text" class="form-control" name="telephone"
+                               placeholder="请输入手机号">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" id="confirm" class="btn btn-danger">预约</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#confirm ").click(function () {
+                console.info("基本");
+                //todo 为啥post请求方式不行
+                {#                $.post("/add_order", function () {#}
+                {#                    alert("预约成功");#}
+                {#                });#}
+                $.ajax({
+                    url: '/add_order/',
+                    type: 'GET',
+                    data: {username: "name", password: "password"},
+                    success: function () {
+                        alert("预约成功")
+                    }
+                })
+                return false;
+            });
+
+        });
+    </script>
+{% endblock main %}

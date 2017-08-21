@@ -53,6 +53,7 @@ def add_comment(request):
 
             new_comment = Comment()
             new_comment.post = post_db
+            new_comment.worker = post_db.worker
             # new_comment.name = comment_name
             new_comment.telephone = comment_telephone
             new_comment.text = comment_text

@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+<!-- 导入静态文件夹 -->
+{% load staticfiles %}
+{% load production_tags %}
+{% block main %}
+    <style>
+        .nav-top {
+            top: 60px;
+            width: 100%;
+            padding-left: 100px;
+            border: solid 1px #3253ff;
+            margin-left: 0px;
+        }
+
+        .area-div {
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+        }
+
+        .comment-div {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            margin-top: 5px;
+            padding: 15px;;
+            background-color: #aea81f;
+            border-radius: 10px;
+        }
+    </style>
+    <nav id="navbar-example" class="navbar navbar-default navbar-static navbar-fixed-top nav-top" role="navigation">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav" style="display: flex;align-content: center;">
+                <li id="info-click"><a href="#info">服务项目</a></li>
+                <li id="process-click"><a href="#process">案例展示</a></li>
+                <li id="commit-click"><a href="#commit">业主评论</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div style="background-color: #e2efe6;">
+        <h4 style="margin-top: 120px;padding-left: 20px;padding-top: 10px;">服务项目:</h4>
+        <div class="row area-div">
+            {% get_worker_production worker_pk as productions %}
+            {% for service in productions %}
+                <a href="{{ service.get_absolute_url }}">
+                    <div class="col-md-4  out-bg box">
+                        {# base_pic_url来自于自定义的渲染器 #}
+                        <img src="{{ base_pic_url }}{{ service.image }}" class="img-responsive img-show"
+                             alt="Responsive image">
+                        <div style="padding-top: 20px;">
+                            <div class="box-row">
+                                <p>服务名称:{{ service.name }} </p>
+                                <p>服务简介:{{ service.describe }}</p>
+                            </div>
+                            <div class="box-row">
+                                <p>服务范围:{{ service.scope }}</p>
+                                <p>参考价格:{{ service.price }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            {% empty %}
+                <div class="no-post">暂时还没有发布的案例！</div>
+            {% endfor %}
+        </div>
+        <h4 style="margin-top: 20px;padding-left: 20px;">案例展示:</h4>
+        <div class="row area-div">
+            {% get_worker_post worker_pk as posts %}
+            {% for post in posts %}
+                <div class="col-md-6  out-bg box">
+                    <a href="{{ post.get_absolute_url }}">
+                        {# base_pic_url来自于自定义的渲染器 #}
+                        <img src="{{ base_pic_url }}{{ post.post_imag }}" class="img-responsive img-show"
+                             alt="Responsive image">
+                        <div style="padding-top: 20px;">
+                            <div class="box-row">
+                                <p>位置:{{ post.district }}&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;</p>
+                                <p>小区:{{ post.village }}</p>
+                            </div>
+                            <div class="box-row">
+                                <p>状态:{{ post.state }}&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;</p>
+                                <p>开工日期:{{ post.created_time }}</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% empty %}
+                <div class="no-post">暂时还没有发布的案例！</div>
+            {% endfor %}
+        </div>
+        <h4 style="margin-top: 20px;padding-left: 20px;">业主评价:</h4>
+        <div class="row area-div">
+            {% get_worker_comment worker_pk as comements %}
+            {% for comment in comements %}
+                <div class="comment-div">
+                    <div>
+                        {{ comment.telephone }}
+                    </div>
+                    {#todo div的 自动换行：http://www.cnblogs.com/Chenshuai7/p/5271466.html#}
+                    <div style="padding-left: 20px;word-wrap:break-word;padding-right: 30px;">
+                        {{ comment.text }}
+                    </div>
+                    <div style="align-self: flex-end;">
+                        {{ comment.created_time }}
+                    </div>
+                </div>
+            {% empty %}
+                <div class="no-post">暂时还没有评价！</div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock main %}
