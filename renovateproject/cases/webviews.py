@@ -1,13 +1,13 @@
-from django.http import HttpResponse, JsonResponse
+import json
+
 from django.shortcuts import render, get_object_or_404
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
 
 from cases.models import Post, Worker, Service
 
-
 # 获得案例列表(包含根据worker获得案例列表)
+from cases.serializers import WorkerSerializer, SchemeInServiceSerializer
+
+
 def cases(request, worker_pk=0):
     # return HttpResponse("欢迎访问首页！")东城西城海淀朝阳丰台房山通州顺义昌平大兴怀柔门头沟石景山
     state_list = ['全部', '已完工', '未完工']
@@ -34,14 +34,11 @@ def service_detail(request, service_pk):
     services = Service.objects.filter(pk=service_pk)
     if len(services) > 0:
         service = services[0]
+        worker = service.worker
+        serializer = WorkerSerializer(worker, many=False)  # todo 实现返回单独的对象
         scheme_in_services = service.schemeinservice_set.all()
+        scheme_in_services_serializer = SchemeInServiceSerializer(scheme_in_services, many=True)
         return render(request, 'cases/service_detail.html',
-                      context={'service_pk': service_pk, 'service': service, 'scheme_in_services': scheme_in_services})
-
-
-@api_view(['GET'])
-@csrf_exempt
-@permission_classes((AllowAny,))
-def add_order(request):
-    a = range(100)
-    return JsonResponse("hello", safe=False)
+                      context={'worker': serializer.data, 'service_pk': service_pk, 'service': service,
+                               'scheme_in_services': scheme_in_services,
+                               'scheme_in_services_js': json.dumps(scheme_in_services_serializer.data)})

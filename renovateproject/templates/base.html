@@ -31,8 +31,9 @@
     <header id="site-header" class="navbar-fixed-top">
         <div class="row">
             <div class="col-md-4 col-sm-5 col-xs-8">
-                <div class="logo">
-                    <h1><a href="#"><b>...</b> &amp; ...</a></h1>
+                <div class="logo" style="display: flex;">
+                    <h3><a href="#"><b>首页</b> &amp;</a></h3>
+                    <h3><a href="#">管家地盘</a></h3>
                 </div>
             </div><!-- col-md-4 -->
             <div class="col-md-8 col-sm-7 col-xs-4">
@@ -45,8 +46,8 @@
 
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav navbar-right">
-                            <li class="cl-effect-11"><a href="index.html" data-hover="">登录</a></li>
-                            <li class="cl-effect-11"><a href="full-width.html" data-hover="">管家入口</a></li>
+                            <li class="cl-effect-11"><a href="" data-hover="">登录</a></li>
+                            <li class="cl-effect-11"><a href="{% url 'order:manager-url' %}" data-hover="">管家入口</a></li>
                             <li class="cl-effect-11"><a href="about.html" data-hover="About">About</a></li>
                             <li class="cl-effect-11"><a href="contact.html" data-hover="Contact">Contact</a></li>
                         </ul>
@@ -73,10 +74,9 @@
                 {% block main %}
                 {% endblock main %}
             </main>
-            <div class="col-md-2 col-sm-2 col-xs-2 ">
+            <div  class="col-md-2 col-sm-2 col-xs-2 ">
                 {% block div %}
                 {% endblock div %}
-                {#                <p style="border-left:1px solid black;background-color: #5bc0de;max-height: 100%;">我是侧边栏</p>#}
             </div>
 
         </div>
@@ -93,21 +93,6 @@
         </div>
     </div>
 </footer>
-
-<!-- Mobile Menu -->
-{#<div class="overlay overlay-hugeinc">#}
-{#    <button type="button" class="overlay-close"><span class="ion-ios-close-empty"></span></button>#}
-{#    <nav>#}
-{#        <ul>#}
-{#            <li><a href="index.html">Home</a></li>#}
-{#            <li><a href="full-width.html">Blog</a></li>#}
-{#            <li><a href="about.html">About</a></li>#}
-{#            <li><a href="contact.html">Contact</a></li>#}
-{#        </ul>#}
-{#    </nav>#}
-{#</div>#}
-
 <script src="{% static 'js/script.js' %}"></script>
-
 </body>
 </html>

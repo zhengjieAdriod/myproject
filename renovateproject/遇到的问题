@@ -1,9 +1,6 @@
-fdfdfdsfasdf
 
 1，滚动兼容问题
     http://www.cnblogs.com/xxcanghai/p/5015712.html
-
-
 
 2，自定义标签，传递参数
     这两天学着写了个 Django 的 tag，这个 tag 叫做 "post_detail_tag", 调用的代码像这样：
@@ -11,3 +8,6 @@ fdfdfdsfasdf
     其中后面两个都是传递的变量。
 
 3, 使用ajax 的post  请求无法走到视图函数????  什么原因
+    http://code.ziqiangxuetang.com/django/django-csrf.html
+4,跳转到静态页面的方式:
+    <a href="{% url 'order:manager-url' %}" data-hover="">管家入口</a>

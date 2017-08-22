@@ -25,12 +25,9 @@ class Comment(models.Model):
 
 @python_2_unicode_compatible
 class Owner(models.Model):
-    telephone = models.CharField(max_length=100)
-    password = models.CharField(max_length=100, default='111')
+    telephone = models.TextField()
+    password = models.CharField(max_length=100, default='111', null=True, blank=True)
     created_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.telephone[:10]
-
-
-

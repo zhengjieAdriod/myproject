@@ -58,9 +58,9 @@
     </nav>
     <div style="background-color: #e2efe6;">
         <h4 style="margin-top: 120px;padding-left: 20px;padding-top: 10px;">个性化施工方案:</h4>
-        <div class="row area-div">
+        <div id="pr" class="row area-div">
             {% for service in scheme_in_services %}
-                <div class="col-md-4  out-bg box">
+                <div class=" ch col-md-4  out-bg box">
                     {# base_pic_url来自于自定义的渲染器 #}
                     <img src="{{ base_pic_url }}{{ service.image }}" class="img-responsive img-show"
                          alt="Responsive image">
@@ -124,39 +124,74 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">立即预约</h4>
+                    <h4 class="modal-title text-center" id="myModalLabel">立即预约</h4>
                 </div>
                 <div class="modal-body">
                     <form role="form">
-                        <input style="height: 50px;" type="text" class="form-control" name="telephone"
-                               placeholder="请输入手机号">
+                        <input id="owner-telephone" style="height: 50px;" type="text" class="form-control"
+                               name="telephone"
+                               placeholder="请输入手机号"/>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+
                     <button type="submit" id="confirm" class="btn btn-danger">预约</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
     </div>
+
     <script type="text/javascript">
+        var worker = {{worker|safe}};
+        var service_pk ={{ service_pk|safe }};
+        var schemeInServices ={{ scheme_in_services_js|safe }};
+
+        var index = 0;
+        var lp = schemeInServices[index];
+        var opp = lp['pk'];
         $(document).ready(function () {
+            function checkMobile(s) {
+                if (s === undefined) {
+                    return false;
+                }
+                var phoneReg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(14[0-9]{1})|)+\d{8})$/;
+                var length = s.length;
+                if (length === 11 && phoneReg.test(s)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            $(".order").click(function () {
+                index = $(this).parents(".ch").index()
+            });
             $("#confirm ").click(function () {
-                console.info("基本");
-                //todo 为啥post请求方式不行
-                {#                $.post("/add_order", function () {#}
-                {#                    alert("预约成功");#}
-                {#                });#}
-                $.ajax({
-                    url: '/add_order/',
-                    type: 'GET',
-                    data: {username: "name", password: "password"},
-                    success: function () {
-                        alert("预约成功")
-                    }
-                })
+                var telephone = $('#owner-telephone').val();
+                if (!checkMobile(telephone)) {
+                    $("#myModalLabel").html("输入有误,请重新输入");
+                    return;
+                }
+                $.post("/add_order/", {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    worker_pk: worker['pk'],
+                    owner_telephone: telephone,
+                    service_pk: service_pk,
+                    schemeInService_pk: schemeInServices[index]['pk']
+                }, function () {
+                    $("#myModalLabel").html("预约成功");
+                    $(".modal-body").css("display", "none");
+                    $(".modal-footer").css("display", "none");
+                });
                 return false;
             });
+
+            $('#myModal').on('hidden.bs.modal', function () {
+                $("#myModalLabel").html("立即预约");
+                $(".modal-body").css("display", "inherit");
+                $(".modal-footer").css("display", "inherit");
+            })
 
         });
     </script>

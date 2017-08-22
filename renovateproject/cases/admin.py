@@ -41,7 +41,7 @@ class PostAdmin(admin.ModelAdmin):
 
 
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ['name', 'price', 'describe']
+    list_display = ['name', 'pk','price', 'describe']
     inlines = [SchemeInServiceInline]
 
 

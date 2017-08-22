@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 from rest_framework import serializers
-from cases.models import Service, Worker, Post, Scheme, StartInImage, ProtectionImage, WorkSiteImage, FinishImage
+from cases.models import Service, Worker, Post, Scheme, StartInImage, ProtectionImage, WorkSiteImage, FinishImage, \
+    SchemeInService
 
 
 class ServiceSerializer(serializers.HyperlinkedModelSerializer):
@@ -19,6 +20,14 @@ class SchemeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Scheme
         fields = ('room', 'damage_des', 'measures',)
+
+
+class SchemeInServiceSerializer(serializers.HyperlinkedModelSerializer):
+    Service = ServiceSerializer()
+
+    class Meta:
+        model = SchemeInService
+        fields = ('pk', 'Service', 'image', 'name', 'price', 'describe',)
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
