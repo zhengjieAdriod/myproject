@@ -7,7 +7,7 @@ from cases.models import Service, Worker, Post, Scheme, StartInImage, Protection
 class ServiceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Service
-        fields = ('name', 'price', 'describe',)
+        fields = ('name', 'type', 'price', 'describe',)
 
 
 class WorkerSerializer(serializers.HyperlinkedModelSerializer):

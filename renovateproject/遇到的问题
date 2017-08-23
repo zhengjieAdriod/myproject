@@ -11,3 +11,10 @@
     http://code.ziqiangxuetang.com/django/django-csrf.html
 4,跳转到静态页面的方式:
     <a href="{% url 'order:manager-url' %}" data-hover="">管家入口</a>
+
+5,定位用户点击的是哪个标签:
+         $(".order").click(function () {
+                index = $(this).parents(".ch").index()
+            });
+6, tab页的切换 刷新
+        http://blog.csdn.net/u011085172/article/details/70917475

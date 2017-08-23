@@ -1,0 +1,44 @@
+{% extends 'worker_manage/worker_base.html' %}
+<!-- 导入静态文件夹 -->
+{% load staticfiles %}
+{% load production_tags %}
+{% block div %}
+    <div id="blank" style="height: 600px; background-color: #5bc0de;margin-top: 60px;">
+
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var error = false;//访问失败后, 可以再次点击而访问网络
+            function getTabHtml(index) {
+                $.post("/tab_manage/", {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    index: index,
+                    worker_pk: 1
+                }, function (data, status) {
+                    if (status === 'success') {
+                        $("#blank").html(data);
+                        error = false;
+                    } else {
+                        error = true;
+                    }
+                });
+            }
+
+            var mIndex = 0;
+            //初始化,tab为第一个
+            getTabHtml(mIndex);
+
+            $("li.tab").click(function () {
+                    var index = $(this).index();
+                    $("li.tab").removeClass("active");
+                    $(this).addClass("active");
+                    if (index !== mIndex || error) {
+                        mIndex = index;
+                        getTabHtml(mIndex);
+                    }
+                }
+            );
+        });
+    </script>
+
+{% endblock %}

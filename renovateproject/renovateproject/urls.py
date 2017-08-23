@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'', include('cases.urls')),
     url(r'', include('comments.urls')),
     url(r'', include('order.urls')),
+    url(r'', include('worker_manage.urls')),
 ]
 # 在开发模式下,为了实现从数据库中拿到的图片路径可以直接访问
 if settings.DEBUG:

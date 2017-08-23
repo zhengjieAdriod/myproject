@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+<!-- 导入静态文件夹 -->
+{% load staticfiles %}
+{% load production_tags %}
+{% block main %}
+    <ul id="tab-ul" style="position: fixed; margin-top: 60px;"
+        class=" col-md-2 col-sm-2 col-xs-2 nav nav-pills nav-stacked">
+        <li class="tab active"><a>服务管理</a></li>
+        <li class="tab"><a>订单管理</a></li>
+        <li class="tab"><a>评论管理</a></li>
+        <li class="tab"><a>VB.Net</a></li>
+    </ul>
+    <div class="row ">
+        <div class=" col-md-2 col-sm-2 col-xs-2 ">
+        </div>
+        <div class="col-md-10 col-sm-10 col-xs-10">
+            {% block div %}
+            {% endblock div %}
+        </div>
+    </div>
+    <script type="text/javascript">
+        {# 初始化,全屏#}
+        $(document).ready(function () {
+            $('main').removeClass("col-md-10 col-sm-10 col-xs-10 ");
+            $('main').addClass("col-md-12 col-sm-12 col-xs-12 ");
+        });
+    </script>
+{% endblock main %}

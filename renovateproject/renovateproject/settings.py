@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'cases',
     'comments',
     'order',
+    'worker_manage',
 ]
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,

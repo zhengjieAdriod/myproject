@@ -1,0 +1,33 @@
+<!-- 导入静态文件夹 -->
+{% load staticfiles %}
+<!-- 导入自定义标签 -->
+{#		{% load blog_tags %}#}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">面板标题</h3>
+    </div>
+    <table class="table">
+        <th>名称</th>
+        <th>价格</th>
+        <th>类型</th>
+        <th>区域</th>
+        <th>编辑</th>
+        <th>删除</th>
+        {% for service in services %}
+
+            <tr>
+                <td>{{ service.name }}</td>
+                <td>{{ service.price }}</td>
+                <td>{{ service.type }}</td>
+                <td>{{ service.scope }}</td>
+                <td>
+                    <a href="{{ service.get_absolute_url_by_worker }}">
+                        <img style="height: 20px;" src="{% static 'imgs/edit.png' %}"/>
+                    </a>
+                </td>
+                <td>删除</td>
+            </tr>
+
+        {% endfor %}
+    </table>
+</div>

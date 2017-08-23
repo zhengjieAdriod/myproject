@@ -1,0 +1,114 @@
+{% extends 'worker_manage/worker_base.html' %}
+<!-- 导入静态文件夹 -->
+{% load staticfiles %}
+{% load production_tags %}
+{% block div %}
+    <div id="blank" style="height: 600px; background-color: #5bc0de;margin-top: 60px;">
+        <div class="list-group">
+            <div class="list-group-item active">
+                <h4 class="list-group-item-heading">
+                    编辑服务
+                </h4>
+            </div>
+            <form action="{% url 'worker_manage:update_edit_service-url' service.pk %}" method="post" role="form"
+                  class="list-group-item service-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="input_file">服务头像</label>
+                    <img src="{% static 'imgs/head.png' %}" class="list-group-item-text"/>
+                    <input style="display: inline;" type="file" id="input_file">
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.name.id_for_label }}">服务名称</label>
+                    {{ form.name }}
+                    {{ form.name.errors }}
+                    {#                    <input style="display: inline;" value="{{ service.name }}" type="text">#}
+                </div>
+                <div class="form-group">
+                    <label for="input_file">管家</label>
+                    <input style="display: inline;" disabled="disabled" value="{{ worker.name }}" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="input_file">价格区间</label>
+                    <input style="display: inline;" value="{{ service.price }}" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="input_file">简介</label>
+                    <input style="display: inline;" value="{{ service.describe }}" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.scope.id_for_label }}">服务范围</label>
+                    {{ form.scope }}
+                    {{ form.scope.errors }}
+                    {#                    <input style="display: inline;" value="{{ service.scope }}" type="text">#}
+                </div>
+                <div class="form-group">
+                    <label for="input_file">服务类型</label>
+                    <input style="display: inline;" value="{{ service.type }}" type="text">
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox">请打勾
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-default">提交</button>
+            </form>
+        </div>
+        <div class="list-group">
+            <a href="#" class="list-group-item active">
+                <h4 class="list-group-item-heading">
+                    商务网站包
+                </h4>
+            </a>
+            <a href="#" class="list-group-item">
+                <h4 class="list-group-item-heading">
+                    免费域名注册
+                </h4>
+                <p class="list-group-item-text">
+                    您将通过网页进行免费域名注册。
+                </p>
+            </a>
+            <a href="#" class="list-group-item">
+                <h4 class="list-group-item-heading">24*7 支持</h4>
+                <p class="list-group-item-text">我们提供 24*7 支持。</p>
+            </a>
+        </div>
+
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var error = false;//访问失败后, 可以再次点击而访问网络
+            function getTabHtml(index) {
+                $.post("/tab_manage/", {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    index: index,
+                    worker_pk: 1
+                }, function (data, status) {
+                    if (status === 'success') {
+                        $("#blank").html(data);
+                        error = false;
+                    } else {
+                        error = true;
+                    }
+                });
+            }
+
+            var mIndex = 0;
+            //初始化,tab为第一个
+            {#            getTabHtml(mIndex);#}
+
+            $("li.tab").click(function () {
+                    var index = $(this).index();
+                    $("li.tab").removeClass("active");
+                    $(this).addClass("active");
+                    if (index !== mIndex || error) {
+                        mIndex = index;
+                        getTabHtml(mIndex);
+                    }
+                }
+            );
+        });
+    </script>
+
+{% endblock %}

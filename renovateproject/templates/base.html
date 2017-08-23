@@ -47,7 +47,8 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav navbar-right">
                             <li class="cl-effect-11"><a href="" data-hover="">登录</a></li>
-                            <li class="cl-effect-11"><a href="{% url 'order:manager-url' %}" data-hover="">管家入口</a></li>
+                            <li class="cl-effect-11"><a href="{% url 'worker_manage:manager-url' %}"
+                                                        data-hover="">管家入口</a></li>
                             <li class="cl-effect-11"><a href="about.html" data-hover="About">About</a></li>
                             <li class="cl-effect-11"><a href="contact.html" data-hover="Contact">Contact</a></li>
                         </ul>
@@ -74,7 +75,7 @@
                 {% block main %}
                 {% endblock main %}
             </main>
-            <div  class="col-md-2 col-sm-2 col-xs-2 ">
+            <div class="col-md-2 col-sm-2 col-xs-2 ">
                 {% block div %}
                 {% endblock div %}
             </div>

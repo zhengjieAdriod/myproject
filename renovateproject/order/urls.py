@@ -13,6 +13,6 @@ urlpatterns = [
 
     # 下面的是rest framwork 的路由
     url(r'^', include(router.urls)),
-    url(r'^manager/$', views.manager, name='manager-url'),
+
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

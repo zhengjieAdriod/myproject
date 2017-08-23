@@ -46,5 +46,4 @@ def add_order(request):
     return JsonResponse("hello", safe=False)
 
 
-def manager(request):
-    return render(request, 'worker_manage/service_list.html')
+

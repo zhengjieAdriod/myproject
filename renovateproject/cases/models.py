@@ -51,10 +51,15 @@ class Service(models.Model):
     describe = models.TextField(blank=True)
     # 服务区域, 如北京通州, 北京朝阳
     scope = models.CharField(max_length=70, blank=True)
+    # 新加的类型
+    type = models.CharField(max_length=70, blank=True)
 
     # 自定义 get_absolute_url 方法
     def get_absolute_url(self):
         return reverse('cases:service_detail-url', kwargs={'service_pk': self.pk})
+
+    def get_absolute_url_by_worker(self):
+        return reverse('worker_manage:edit_service-url', kwargs={'service_pk': self.pk})
 
     def __str__(self):
         return self.name
