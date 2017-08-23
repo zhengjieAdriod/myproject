@@ -10,7 +10,7 @@
                     编辑服务
                 </h4>
             </div>
-            <form action="{% url 'worker_manage:update_edit_service-url' service.pk %}" method="post" role="form"
+            <form action="{% url 'worker_manage:update_edit_service-url' 4 %}" method="post" role="form"
                   class="list-group-item service-form">
                 {% csrf_token %}
                 <div class="form-group">
