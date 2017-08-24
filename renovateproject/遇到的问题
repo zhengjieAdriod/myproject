@@ -20,3 +20,8 @@
         http://blog.csdn.net/u011085172/article/details/70917475
 7, form 表单
     记住, 请求的表单展示的视图函数  与  提交时的视图函数  是同一个函数,  如此才能渲染成input 标签
+8, django视图函数的数据，要序列化之后  才能传递给js代码使用
+
+
+9,表单数据初始化：
+    http://www.jianshu.com/p/5664dd79c0ba

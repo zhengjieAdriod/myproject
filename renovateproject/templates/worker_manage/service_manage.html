@@ -13,7 +13,7 @@
                 $.post("/tab_manage/", {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     index: index,
-                    worker_pk: 1
+                    worker_pk: 2
                 }, function (data, status) {
                     if (status === 'success') {
                         $("#blank").html(data);

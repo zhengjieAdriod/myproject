@@ -61,10 +61,8 @@ def edit_service(request, service_pk):
 def update_edit_service(request, service_pk):
     service = get_object_or_404(Service, pk=service_pk)
     if request.method == 'POST':
-        # 用户提交的数据存在 request.POST 中，这是一个类字典对象。
         # 我们利用这些数据构造了 CommentForm 的实例，这样 Django 的表单就生成了。
         form = ServiceForm(request.POST)
-
         # 当调用 form.is_valid() 方法时，Django 自动帮我们检查表单的数据是否符合格式要求。
         if form.is_valid():
             # 检查到数据是合法的，调用表单的 save 方法保存数据到数据库，
@@ -79,9 +77,8 @@ def update_edit_service(request, service_pk):
 
             # 重定向到 post 的详情页，实际上当 redirect 函数接收一个模型的实例时，它会调用这个模型实例的 get_absolute_url 方法，
             # 然后重定向到 get_absolute_url 方法返回的 URL。
-            return render(request, 'worker_manage/edit_service.html',
+            return render(request, 'worker_manage/service_manage.html',
                           context={'service_pk': service_pk, 'service': service})
-
         else:
             # 检查到数据不合法，重新渲染详情页，并且渲染表单的错误。
             # 因此我们传了三个模板变量给 detail.html，
@@ -96,8 +93,18 @@ def update_edit_service(request, service_pk):
             return render(request, 'worker_manage/edit_service.html', context=context)
             # 不是 post 请求，说明用户没有提交数据，重定向到文章详情页。
             # return render(request, 'worker_manage/edit_service.html', context=context)
-    form = ServiceForm()
-    context = {'service_pk': service_pk, 'service': service, 'form': form}
+
+    service_serializer = ServiceSerializer(service, many=False)
+
+    # form的初始化
+    form = ServiceForm(initial={'name': service.name,
+                                'scope': service.scope,
+                                'price': service.price,
+                                'type': service.type,
+                                'describe': service.describe,
+                                'worker': service.worker,
+                                'image': service.image})
+    context = {'service_pk': service_pk, 'service': json.dumps(service_serializer.data), 'form': form}
     return render(request, 'worker_manage/edit_service.html', context=context)
 
 

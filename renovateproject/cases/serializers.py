@@ -4,16 +4,18 @@ from cases.models import Service, Worker, Post, Scheme, StartInImage, Protection
     SchemeInService
 
 
-class ServiceSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Service
-        fields = ('name', 'type', 'price', 'describe',)
-
-
 class WorkerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Worker
         fields = ('pk', 'name', 'tele', 'num', 'praise',)
+
+
+class ServiceSerializer(serializers.HyperlinkedModelSerializer):
+    worker = WorkerSerializer()
+
+    class Meta:
+        model = Service
+        fields = ('name', 'type', 'price', 'describe', 'scope', 'worker','image',)
 
 
 class SchemeSerializer(serializers.HyperlinkedModelSerializer):
