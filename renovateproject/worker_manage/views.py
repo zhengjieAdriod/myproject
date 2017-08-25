@@ -32,7 +32,7 @@ def tab_manage(request):
     if index == '0':
         worker = workers[0]
         services = worker.service_set.all()
-        services = services.reverse()
+        services = sorted(services, key=lambda service: service.pk, reverse=True)
         return render(request, 'worker_manage/tab_service.html',
                       context={'worker': worker, 'services': services})
     if index == '1':
@@ -50,10 +50,17 @@ def add_service(request, worker_pk):
         worker_pk = worker.pk
         if request.method == 'POST':
             form = ServiceForm(request.POST)
+
             if form.is_valid():
                 service_form = form.save(commit=False)
+
+                file_dic = request.FILES.dict()
+                l = len(file_dic)
+                if l > 0:
+                    image = file_dic['image']
+                    service_form.image = image
                 # 将评论和被评论的文章关联起来。
-                # service_form.worker = worker
+                service_form.worker = worker
                 service_form.save()
                 # return redirect(worker)  # todo 第一种重定向方式
                 # todo 第二种重定向方式
@@ -85,10 +92,15 @@ def update_edit_service(request, service_pk):
             # 检查到数据是合法的，调用表单的 save 方法保存数据到数据库，
             # commit=False 的作用是仅仅利用表单的数据生成 Comment 模型类的实例，但还不保存评论数据到数据库。
             service_form = form.save(commit=False)
+            file_dic = request.FILES.dict()
+            l = len(file_dic)
+            if l > 0:
+                image = file_dic['image']
+                service_form.image = image
             # 将评论和被评论的文章关联起来。
             # comment.post = post
             # 最终将评论数据保存进数据库，调用模型实例的 save 方法
-
+            service_form.worker = service.worker
             service_form.save()
             # return redirect(worker)  # todo 第一种重定向方式
             # todo 第二种重定向方式

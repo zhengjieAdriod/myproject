@@ -41,3 +41,7 @@
             # return redirect(worker)  # todo 第一种重定向方式
             # todo 第二种重定向方式
             return redirect(reverse('worker_manage:manager-url', kwargs={'worker_pk': worker_pk}))
+
+12, 列表排序
+        services = worker.service_set.all()
+        services = sorted(services, key=lambda service: service.pk, reverse=True)

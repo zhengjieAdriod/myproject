@@ -3,9 +3,9 @@
 <!-- 导入自定义标签 -->
 {#		{% load blog_tags %}#}
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 style="display: inline" class="panel-title">服务列表</h3>
-        <a href="{% url 'worker_manage:add_service-url' worker.pk %}" data-hover="">新增服务</a>
+    <div class="panel-heading" style="display: flex;justify-content: space-between;">
+        <h3  class="panel-title">服务列表</h3>
+        <a  style="margin-right: 60px;"  href="{% url 'worker_manage:add_service-url' worker.pk %}" data-hover="">新增服务</a>
     </div>
     <table class="table">
         <th>名称</th>
