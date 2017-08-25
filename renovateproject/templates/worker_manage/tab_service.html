@@ -4,7 +4,8 @@
 {#		{% load blog_tags %}#}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">面板标题</h3>
+        <h3 style="display: inline" class="panel-title">服务列表</h3>
+        <a href="{% url 'worker_manage:add_service-url' worker.pk %}" data-hover="">新增服务</a>
     </div>
     <table class="table">
         <th>名称</th>

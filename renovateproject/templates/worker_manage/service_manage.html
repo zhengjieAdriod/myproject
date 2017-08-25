@@ -7,38 +7,39 @@
 
     </div>
     <script type="text/javascript">
-        $(document).ready(function () {
-            var error = false;//访问失败后, 可以再次点击而访问网络
-            function getTabHtml(index) {
-                $.post("/tab_manage/", {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    index: index,
-                    worker_pk: 2
-                }, function (data, status) {
-                    if (status === 'success') {
-                        $("#blank").html(data);
-                        error = false;
-                    } else {
-                        error = true;
-                    }
-                });
-            }
-
-            var mIndex = 0;
-            //初始化,tab为第一个
-            getTabHtml(mIndex);
-
-            $("li.tab").click(function () {
-                    var index = $(this).index();
-                    $("li.tab").removeClass("active");
-                    $(this).addClass("active");
-                    if (index !== mIndex || error) {
-                        mIndex = index;
-                        getTabHtml(mIndex);
-                    }
+        var worker_pk = {{ worker_pk|safe }}
+            $(document).ready(function () {
+                var error = false;//访问失败后, 可以再次点击而访问网络
+                function getTabHtml(index) {
+                    $.post("/tab_manage/", {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        index: index,
+                        worker_pk:worker_pk
+                    }, function (data, status) {
+                        if (status === 'success') {
+                            $("#blank").html(data);
+                            error = false;
+                        } else {
+                            error = true;
+                        }
+                    });
                 }
-            );
-        });
+
+                var mIndex = 0;
+                //初始化,tab为第一个
+                getTabHtml(mIndex);
+
+                $("li.tab").click(function () {
+                        var index = $(this).index();
+                        $("li.tab").removeClass("active");
+                        $(this).addClass("active");
+                        if (index !== mIndex || error) {
+                            mIndex = index;
+                            getTabHtml(mIndex);
+                        }
+                    }
+                );
+            });
     </script>
 
 {% endblock %}

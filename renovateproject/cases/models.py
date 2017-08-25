@@ -36,6 +36,9 @@ class Worker(models.Model):
     def get_worker_service_url(self):
         return reverse('cases:worker_service-url', kwargs={'worker_pk': self.pk})
 
+    def get_absolute_url(self):
+        return reverse('worker_manage:manager-url', kwargs={'worker_pk': self.pk})
+
     def __str__(self):
         return self.name
 
@@ -53,6 +56,7 @@ class Service(models.Model):
     scope = models.CharField(max_length=70, blank=True)
     # 新加的类型
     type = models.CharField(max_length=70, blank=True)
+    created_time = models.DateTimeField(null=True, blank=True)
 
     # 自定义 get_absolute_url 方法
     def get_absolute_url(self):
@@ -63,6 +67,9 @@ class Service(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['-created_time']
 
 
 # 同一个服务中不同价格的子服务(同一个服务中的个性化服务)

@@ -14,10 +14,10 @@
         <div class="list-group">
             <div class="list-group-item active">
                 <h4 class="list-group-item-heading">
-                    编辑服务
+                    新增服务
                 </h4>
             </div>
-            <form action="{% url 'worker_manage:edit_service-url' service_pk %}" method="post" role="form"
+            <form action="{% url 'worker_manage:add_service-url' worker_pk %}" method="post" enctype="multipart/form-data" role="form"
                   class="list-group-item service-form">
                 {% csrf_token %}
                 <div class="form-group">

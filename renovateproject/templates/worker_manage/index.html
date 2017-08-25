@@ -1,14 +1,62 @@
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{#<form action="{% url 'worker_manage:update_edit_service-url' 4 %}" method='post'>#}
+{#    {% csrf_token %}#}
+{#    {{ form }}#}
+{#    <input type="submit" value="提交">#}
+{#</form>#}
+{##}
+{#</body>#}
+{#</html>#}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>上传图片预览示例一</title>
+    <meta name="author" content="熊仔其人-2017年3月3日"/>
+    <meta name="keywords" content=""/>
+    <meta name="description" content="示例一展示了前端图片上传预览基本功能的实现"/>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 </head>
 <body>
-<form action="{% url 'worker_manage:update_edit_service-url' 4 %}" method='post'>
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="提交">
+<form id="Form1" method="post" enctype="multipart/form-data">
+    <input id="file_upload" type="file" accept="image/jpeg,image/png,image/gif"/>
+    <div class="image_container">
+        <img id="preview" style="height:130px;width:117px;border-width:0px;"/>
+    </div>
 </form>
+
+<script type="text/javascript">
+    $(function () {
+        $("#file_upload").change(function () {
+            var $file = $(this);
+            var fileObj = $file[0];
+            var windowURL = window.URL || window.webkitURL;
+            var dataURL;
+            var $img = $("#preview");
+
+            if (fileObj && fileObj.files && fileObj.files[0]) {
+                dataURL = windowURL.createObjectURL(fileObj.files[0]);
+                $img.attr('src', dataURL);
+            } else {
+                dataURL = $file.val();
+                var imgObj = document.getElementById("preview");
+                // 两个坑:
+                // 1、在设置filter属性时，元素必须已经存在在DOM树中，动态创建的Node，也需要在设置属性前加入到DOM中，先设置属性在加入，无效；
+                // 2、src属性需要像下面的方式添加，上面的两种方式添加，无效；
+                imgObj.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+                imgObj.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = dataURL;
+
+            }
+        });
+    });
+</script>
 </body>
 </html>
