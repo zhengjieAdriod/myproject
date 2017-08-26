@@ -11,7 +11,7 @@
         <li class="tab"><a>VB.Net</a></li>
     </ul>
     <div class="row ">
-        <div class=" col-md-2 col-sm-2 col-xs-2 ">
+        <div  class=" col-md-2 col-sm-2 col-xs-2 ">
         </div>
         <div class="col-md-10 col-sm-10 col-xs-10">
             {% block div %}
@@ -23,6 +23,8 @@
         $(document).ready(function () {
             $('main').removeClass("col-md-10 col-sm-10 col-xs-10 ");
             $('main').addClass("col-md-12 col-sm-12 col-xs-12 ");
+            $('#right-side').css('display','none')
+            $('#site-footer').css('display','none')
         });
     </script>
 {% endblock main %}

@@ -14,6 +14,8 @@ urlpatterns = [
     url(r'^tab_manage/$', views.tab_manage, name='tab_manage-url'),
     url(r'^edit_service/(?P<service_pk>[0-9]+)/$', views.update_edit_service, name='edit_service-url'),
     url(r'^add_service/(?P<worker_pk>[0-9]+)/$', views.add_service, name='add_service-url'),
+    url(r'^post_service_item/(?P<worker_pk>[0-9]+)/(?P<service_pk>[0-9]+)/(?P<form_item_pk>[0-9]+)/$', views.post_service_item,
+        name='post_service_item-url'),
 
     # url(r'^update_edit_service/(?P<service_pk>[0-9]+)/$', views.update_edit_service, name='update_edit_service-url'),
     # 下面的是rest framwork 的路由update_edit_service

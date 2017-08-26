@@ -45,3 +45,5 @@
 12, 列表排序
         services = worker.service_set.all()
         services = sorted(services, key=lambda service: service.pk, reverse=True)
+13 ， 表单学习
+        http://blog.csdn.net/qq_14898613/article/details/61617007

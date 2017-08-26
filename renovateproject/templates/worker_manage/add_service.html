@@ -17,7 +17,8 @@
                     新增服务
                 </h4>
             </div>
-            <form action="{% url 'worker_manage:add_service-url' worker_pk %}" method="post" enctype="multipart/form-data" role="form"
+            <form action="{% url 'worker_manage:add_service-url' worker_pk %}" method="post"
+                  enctype="multipart/form-data" role="form"
                   class="list-group-item service-form">
                 {% csrf_token %}
                 <div class="form-group">
@@ -26,8 +27,6 @@
                     {{ form.image.errors }}
 
                 </div>
-                {#                <img src="{% static 'imgs/head.png' %}" class="img-responsive img-show"#}
-                {#                     alt="Responsive image">#}
                 <div class="form-group">
                     <label for="{{ form.name.id_for_label }}">服务名称</label>
                     {{ form.name }}
@@ -61,37 +60,24 @@
                     {{ form.type.errors }}
                 </div>
 
-                <button type="submit" class="btn btn-default">提交</button>
+                <button type="submit" class="btn btn-danger">提交</button>
             </form>
-        </div>
-        <div class="list-group">
-            <a href="#" class="list-group-item active">
-                <h4 class="list-group-item-heading">
-                    商务网站包
-                </h4>
-            </a>
-            <a href="#" class="list-group-item">
-                <h4 class="list-group-item-heading">
-                    免费域名注册
-                </h4>
-                <p class="list-group-item-text">
-                    您将通过网页进行免费域名注册。
-                </p>
-            </a>
-            <a href="#" class="list-group-item">
-                <h4 class="list-group-item-heading">24*7 支持</h4>
-                <p class="list-group-item-text">我们提供 24*7 支持。</p>
-            </a>
         </div>
 
     </div>
 
     <script type="text/javascript">
-        var service = {{ service|safe }};
-        $(document).ready(function () {
-
-
-        });
+{#        var service_pk = {{ service_pk|safe }}#}
+            $(document).ready(function () {
+                $("textarea").css({"height": "90px"});
+{#                if (service_pk > 0) {#}
+{#                    $("button#post-item").css("display", "none");#}
+{#                    $("button#post-item-able").css("display", "inherit");#}
+{#                } else {#}
+{#                    $("button#post-item").css("display", "inherit");#}
+{#                    $("button#post-item-able").css("display", "none");#}
+{#                }#}
+            });
     </script>
 
 {% endblock %}

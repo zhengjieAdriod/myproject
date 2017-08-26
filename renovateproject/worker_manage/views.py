@@ -9,9 +9,9 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 
-from cases.models import Service, Worker
+from cases.models import Service, Worker, SchemeInService
 from cases.serializers import ServiceSerializer, WorkerSerializer, SchemeInServiceSerializer
-from worker_manage.forms import ServiceForm, AddForm
+from worker_manage.forms import ServiceForm, AddForm, SchemeInServiceForm
 
 
 def manager(request, worker_pk):
@@ -75,6 +75,86 @@ def add_service(request, worker_pk):
         return render(request, 'worker_manage/add_service.html', context=context)
 
 
+# 增加service 并关联worker
+# def add_service(request, worker_pk):
+#     workers = Worker.objects.filter(pk=worker_pk)
+#     if len(workers) > 0:
+#         worker = workers[0]
+#         worker_pk = worker.pk
+#         if request.method == 'POST':
+#             form = ServiceForm(request.POST)
+#             if form.is_valid():
+#                 service_form = form.save(commit=False)
+#
+#                 file_dic = request.FILES.dict()
+#                 l = len(file_dic)
+#                 if l > 0:
+#                     image = file_dic['image']
+#                     service_form.image = image
+#                 # 将评论和被评论的文章关联起来。
+#                 service_form.worker = worker
+#                 service_form.save()
+#                 # return redirect(worker)  # todo 第一种重定向方式
+#                 # todo 第二种重定向方式
+#                 # return redirect(reverse('worker_manage:manager-url', kwargs={'worker_pk': worker_pk}))
+#                 form_item_list = []
+#                 form_item = SchemeInServiceForm()
+#                 form_item_list.append(form_item)
+#                 form_item_list.append(form_item)
+#                 context = {'service_pk': service_form.pk, 'worker_pk': worker.pk, 'form': form,
+#                            'form_item_list': form_item_list}
+#                 return render(request, 'worker_manage/add_service.html', context=context)
+#             else:
+#                 # 检查到数据不合法，重新渲染详情页，并且渲染表单的错误。
+#                 context = {'form': form}
+#                 return render(request, 'worker_manage/add_service.html', context=context)
+#         # get请求时
+#         form = ServiceForm()
+#         form_item_list = []
+#         form_item = SchemeInServiceForm()
+#         form_item_list.append(form_item)
+#         form_item_list.append(form_item)
+#         # -1来区别按钮是否可以点击
+#         context = {'service_pk': -1, 'worker_pk': worker.pk, 'form': form, 'form_item_list': form_item_list}
+#         return render(request, 'worker_manage/add_service.html', context=context)
+
+
+# 增加service的子项 并关联worker，主service
+def post_service_item(request, worker_pk, service_pk, form_item_pk):
+    workers = Worker.objects.filter(pk=worker_pk)
+    if len(workers) > 0:
+        worker = workers[0]
+        worker_pk = worker.pk
+        scheme_in_services = SchemeInService.objects.filter(pk=form_item_pk)
+
+        if request.method == 'POST':
+            if len(scheme_in_services) > 0:
+                scheme_in_service = scheme_in_services[0]
+                form = SchemeInServiceForm(request.POST, instance=scheme_in_service)
+            else:
+                form = SchemeInServiceForm(request.POST)
+            if form.is_valid():
+                scheme_in_service_form = form.save(commit=False)
+
+                file_dic = request.FILES.dict()
+                l = len(file_dic)
+                if l > 0:
+                    image = file_dic['image']
+                    scheme_in_service_form.image = image
+                    # 将评论和被评论的文章关联起来。
+                service = Service.objects.get(pk=service_pk)
+                scheme_in_service_form.service = service
+                scheme_in_service_form.save()
+                service.schemeinservice_set.add(scheme_in_service_form)
+                # return redirect(worker)  # todo 第一种重定向方式
+                # todo 第二种重定向方式
+                return redirect(reverse('worker_manage:manager-url', kwargs={'worker_pk': worker_pk}))
+            else:
+                # 检查到数据不合法，重新渲染详情页，并且渲染表单的错误。
+                context = {'form': form}
+                return render(request, 'worker_manage/edit_service.html', context=context)
+
+
 # 提交编辑后的服务内容
 # @api_view(['POST'])
 # @csrf_exempt
@@ -122,6 +202,21 @@ def update_edit_service(request, service_pk):
     # service_serializer = ServiceSerializer(service, many=False)
     # 'service': json.dumps(service_serializer.data),
     # form的初始化
+    scheme_in_service_set = service.schemeinservice_set
+    scheme_in_service_list = scheme_in_service_set.all()
+    form_item_list = []
+    for scheme_in_service in scheme_in_service_list:
+        form_item = SchemeInServiceForm(initial={'pk': scheme_in_service.pk,
+                                                 'name': scheme_in_service.name,
+                                                 'price': scheme_in_service.price,
+                                                 'describe': scheme_in_service.describe,
+                                                 'image': scheme_in_service.image})
+        form_item.pk = scheme_in_service.pk
+        form_item_list.append(form_item)
+    if len(scheme_in_service_list) < 1:
+        form_item = SchemeInServiceForm()
+        form_item.pk = 0
+        form_item_list.append(form_item)
     form = ServiceForm(initial={'pk': service.pk, 'name': service.name,
                                 'scope': service.scope,
                                 'price': service.price,
@@ -129,7 +224,8 @@ def update_edit_service(request, service_pk):
                                 'describe': service.describe,
                                 'worker': service.worker,
                                 'image': service.image})
-    context = {'service_pk': service_pk, 'form': form}
+    context = {'worker_pk': worker_pk, 'service_pk': service_pk, 'form': form,
+               'form_item_list': form_item_list}
     return render(request, 'worker_manage/edit_service.html', context=context)
 
 

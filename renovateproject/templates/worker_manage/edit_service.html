@@ -17,7 +17,8 @@
                     编辑服务
                 </h4>
             </div>
-            <form action="{% url 'worker_manage:edit_service-url' service_pk %}" method="post" enctype="multipart/form-data" role="form"
+            <form action="{% url 'worker_manage:edit_service-url' service_pk %}" method="post"
+                  enctype="multipart/form-data" role="form"
                   class="list-group-item service-form">
                 {% csrf_token %}
                 <div class="form-group">
@@ -34,7 +35,7 @@
                     {{ form.name.errors }}
                     {#                    <input style="display: inline;" value="{{ service.name }}" type="text">#}
                 </div>
-                <div class="form-group"  style="display: none;">
+                <div class="form-group" style="display: none;">
                     <label for="{{ form.worker.id_for_label }}">管家名称</label>
                     {{ form.worker }}
                     {{ form.worker.errors }}
@@ -61,27 +62,45 @@
                     {{ form.type.errors }}
                 </div>
 
-                <button type="submit" class="btn btn-default">提交</button>
+                <button type="submit" class="btn btn-danger">提交</button>
             </form>
         </div>
         <div class="list-group">
             <a href="#" class="list-group-item active">
                 <h4 class="list-group-item-heading">
-                    商务网站包
+                    服务子项
                 </h4>
             </a>
-            <a href="#" class="list-group-item">
-                <h4 class="list-group-item-heading">
-                    免费域名注册
-                </h4>
-                <p class="list-group-item-text">
-                    您将通过网页进行免费域名注册。
-                </p>
-            </a>
-            <a href="#" class="list-group-item">
-                <h4 class="list-group-item-heading">24*7 支持</h4>
-                <p class="list-group-item-text">我们提供 24*7 支持。</p>
-            </a>
+            {% for form_item in form_item_list %}
+                <form action="{% url 'worker_manage:post_service_item-url' worker_pk service_pk form_item.pk %}" method="post"
+                      enctype="multipart/form-data" role="form"
+                      class="list-group-item service-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="{{ form_item.image.id_for_label }}">头像</label>
+                        {{ form_item.image }}
+                        {{ form_item.image.errors }}
+
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form_item.name.id_for_label }}">服务名称</label>
+                        {{ form_item.name }}
+                        {{ form_item.name.errors }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form_item.price.id_for_label }}">价格区间</label>
+                        {{ form_item.price }}
+                        {{ form_item.price.errors }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form_item.describe.id_for_label }}">简介</label>
+                        {{ form_item.describe }}
+                        {{ form_item.describe.errors }}
+                    </div>
+                    <button id="post-item-able" type="submit" class="btn btn-danger">提交</button>
+
+                </form>
+            {% endfor %}
         </div>
 
     </div>

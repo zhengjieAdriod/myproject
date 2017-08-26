@@ -10,5 +10,9 @@ class OwnerAdmin(admin.ModelAdmin):
     list_display = ['pk', 'telephone', 'password']
 
 
-admin.site.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['pk']
+
+
+admin.site.register(Comment, CommentAdmin)
 admin.site.register(Owner, OwnerAdmin)
