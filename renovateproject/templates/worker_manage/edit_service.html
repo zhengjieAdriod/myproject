@@ -11,24 +11,23 @@
 
     </style>
     <div id="blank" style="height: 600px; background-color: #5bc0de;margin-top: 60px;">
-        <div class="list-group">
-            <div class="list-group-item active">
-                <h4 class="list-group-item-heading">
-                    编辑服务
-                </h4>
-            </div>
-            <form action="{% url 'worker_manage:edit_service-url' service_pk %}" method="post"
-                  enctype="multipart/form-data" role="form"
-                  class="list-group-item service-form">
-                {% csrf_token %}
+        <form action="{% url 'worker_manage:edit_service-url' service_pk %}" method="post"
+              enctype="multipart/form-data" role="form"
+              class="list-group-item service-form form-service">
+            {% csrf_token %}
+            <div class="list-group">
+                <div class="list-group-item active">
+                    <h4 class="list-group-item-heading">
+                        编辑服务
+                    </h4>
+                </div>
+
                 <div class="form-group">
                     <label for="{{ form.image.id_for_label }}">头像</label>
                     {{ form.image }}
                     {{ form.image.errors }}
 
                 </div>
-                {#                <img src="{% static 'imgs/head.png' %}" class="img-responsive img-show"#}
-                {#                     alt="Responsive image">#}
                 <div class="form-group">
                     <label for="{{ form.name.id_for_label }}">服务名称</label>
                     {{ form.name }}
@@ -63,19 +62,20 @@
                 </div>
 
                 <button type="submit" class="btn btn-danger">提交</button>
-            </form>
-        </div>
-        <div class="list-group">
-            <a href="#" class="list-group-item active">
-                <h4 class="list-group-item-heading">
-                    服务子项
-                </h4>
-            </a>
-            {% for form_item in form_item_list %}
-                <form action="{% url 'worker_manage:post_service_item-url' worker_pk service_pk form_item.pk %}" method="post"
-                      enctype="multipart/form-data" role="form"
-                      class="list-group-item service-form">
-                    {% csrf_token %}
+                {#            </form>#}
+            </div>
+            <div class="list-group">
+                <a href="#" class="list-group-item active">
+                    <h4 class="list-group-item-heading">
+                        服务子项
+                    </h4>
+                </a>
+                {% for form_item in form_item_list %}
+                    {#                <form action="{% url 'worker_manage:post_service_item-url' worker_pk service_pk form_item.pk %}"#}
+                    {#                      method="post"#}
+                    {#                      enctype="multipart/form-data" role="form"#}
+                    {#                      class="list-group-item service-form form_item">#}
+                    {#                    {% csrf_token %}#}
                     <div class="form-group">
                         <label for="{{ form_item.image.id_for_label }}">头像</label>
                         {{ form_item.image }}
@@ -99,16 +99,28 @@
                     </div>
                     <button id="post-item-able" type="submit" class="btn btn-danger">提交</button>
 
-                </form>
-            {% endfor %}
-        </div>
 
+                {% endfor %}
+                <button id="post-item-all" class="btn btn-danger">全部提交</button>
+
+            </div>
+        </form>
     </div>
 
     <script type="text/javascript">
-        var service = {{ service|safe }};
         $(document).ready(function () {
-
+            {#            $("#post-item-all").click(function () {#}
+            {#                var t = $("form");#}
+            {#                var e = $(".form-service");#}
+            {#                e01 = e[0];#}
+            {##}
+            {#                var r = $(".form_item");#}
+            {#                r01 = r[0];#}
+            {##}
+            {#                r01.submit();#}
+            {#                e01.submit();#}
+            {#                var d = 0;#}
+            {#            });#}
 
         });
     </script>
