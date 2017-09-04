@@ -61,7 +61,7 @@
                     {{ form.type.errors }}
                 </div>
 
-                <button type="submit" class="btn btn-danger">提交</button>
+{#                <button type="submit" class="btn btn-danger">提交</button>#}
                 {#            </form>#}
             </div>
             <div class="list-group">
@@ -71,11 +71,6 @@
                     </h4>
                 </a>
                 {% for form_item in form_item_list %}
-                    {#                <form action="{% url 'worker_manage:post_service_item-url' worker_pk service_pk form_item.pk %}"#}
-                    {#                      method="post"#}
-                    {#                      enctype="multipart/form-data" role="form"#}
-                    {#                      class="list-group-item service-form form_item">#}
-                    {#                    {% csrf_token %}#}
                     <div class="form-group">
                         <label for="{{ form_item.image.id_for_label }}">头像</label>
                         {{ form_item.image }}
@@ -83,8 +78,8 @@
 
                     </div>
                     <div class="form-group">
-                        <label for="{{ form_item.name.id_for_label }}">服务名称</label>
-                        {{ form_item.name }}
+                        <label for="{{ form_item.name.id_for_label }}">服务名称u</label>
+                        {{ form_item.name_it }}
                         {{ form_item.name.errors }}
                     </div>
                     <div class="form-group">
@@ -97,11 +92,11 @@
                         {{ form_item.describe }}
                         {{ form_item.describe.errors }}
                     </div>
-                    <button id="post-item-able" type="submit" class="btn btn-danger">提交</button>
+{#                    <button id="post-item-able" type="submit" class="btn btn-danger">提交</button>#}
 
 
                 {% endfor %}
-                <button id="post-item-all" class="btn btn-danger">全部提交</button>
+                <button id="post-item-alloo" type="submit" class="btn btn-danger">全部提交oo</button>
 
             </div>
         </form>

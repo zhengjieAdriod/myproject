@@ -180,21 +180,15 @@ def update_edit_service(request, service_pk):
         for scheme_in_service in scheme_in_service_list:
             item_form = SchemeInServiceForm(request.POST, request.FILES, instance=scheme_in_service)
             list.append(item_form)
+        if len(scheme_in_service_list)==0:
+            pass
+
+
         # 当调用 form.is_valid() 方法时，Django 自动帮我们检查表单的数据是否符合格式要求。
         if form.is_valid() and all_valid(list):
             # 检查到数据是合法的，调用表单的 save 方法保存数据到数据库，
             # commit=False 的作用是仅仅利用表单的数据生成 Comment 模型类的实例，但还不保存评论数据到数据库。
             service_form = form.save(commit=False)
-
-            # file_dic = request.FILES.dict()
-            # l = len(file_dic)
-            # if l > 0:
-            #     image = file_dic['image']
-            #     service_form.image = image
-            # 将评论和被评论的文章关联起来。
-            # comment.post = post
-            # 最终将评论数据保存进数据库，调用模型实例的 save 方法
-
             for item in list:
                 item_scheme_form = item.save(commit=False)
                 # item_scheme_form.Service = service
@@ -206,24 +200,8 @@ def update_edit_service(request, service_pk):
             # todo 第二种重定向方式
             return redirect(reverse('worker_manage:manager-url', kwargs={'worker_pk': worker_pk}))
         else:
-            # 检查到数据不合法，重新渲染详情页，并且渲染表单的错误。
-            # 因此我们传了三个模板变量给 detail.html，
-            # 一个是文章（Post），一个是评论列表，一个是表单 form
-            # 注意这里我们用到了 post.comment_set.all() 方法，
-            # 这个用法有点类似于 Post.objects.all()
-            # 其作用是获取这篇 post 下的的全部评论，
-            # 因为 Post 和 Comment 是 ForeignKey 关联的，
-            # 因此使用 post.comment_set.all() 反向查询全部评论。
-            # 具体请看下面的讲解。
             context = {'service_pk': service_pk, 'service': service, 'form': form}
             return render(request, 'worker_manage/edit_service.html', context=context)
-            # 不是 post 请求，说明用户没有提交数据，重定向到文章详情页。
-            # return render(request, 'worker_manage/edit_service.html', context=context)
-    # service_serializer = ServiceSerializer(service, many=False)
-    # 'service': json.dumps(service_serializer.data),
-    # form的初始化
-    # scheme_in_service_set = service.schemeinservice_set
-    # scheme_in_service_list = scheme_in_service_set.all()
     form_item_list = []
     for scheme_in_service in scheme_in_service_list:
         form_item = SchemeInServiceForm(initial={'pk': scheme_in_service.pk,
