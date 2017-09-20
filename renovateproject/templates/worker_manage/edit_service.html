@@ -18,7 +18,7 @@
             <div class="list-group">
                 <div class="list-group-item active">
                     <h4 class="list-group-item-heading">
-                        编辑服务
+                        编辑服务00
                     </h4>
                 </div>
 
@@ -61,41 +61,50 @@
                     {{ form.type.errors }}
                 </div>
 
-{#                <button type="submit" class="btn btn-danger">提交</button>#}
+                {#                <button type="submit" class="btn btn-danger">提交</button>#}
                 {#            </form>#}
             </div>
             <div class="list-group">
-                <a href="#" class="list-group-item active">
+                {#                <a href="{% url 'worker_manage:add_item_service-url' service_pk %}" class="list-group-item active">#}
+                {#                    <h4 class="list-group-item-heading">#}
+                {#                        服务子项#}
+                {#                    </h4>#}
+                {#                </a>#}
+                <a class="list-group-item active" id="add">
                     <h4 class="list-group-item-heading">
                         服务子项
                     </h4>
                 </a>
-                {% for form_item in form_item_list %}
-                    <div class="form-group">
-                        <label for="{{ form_item.image.id_for_label }}">头像</label>
-                        {{ form_item.image }}
-                        {{ form_item.image.errors }}
+                <div>
+                    {% for form_item in form_item_list %}
+                        <div>
+                            <div class="form-group">
+                                <label for="{{ form_item.image.id_for_label }}">头像</label>
+                                {{ form_item.image }}
+                                {{ form_item.image.errors }}
 
-                    </div>
-                    <div class="form-group">
-                        <label for="{{ form_item.name.id_for_label }}">服务名称u</label>
-                        {{ form_item.name_it }}
-                        {{ form_item.name.errors }}
-                    </div>
-                    <div class="form-group">
-                        <label for="{{ form_item.price.id_for_label }}">价格区间</label>
-                        {{ form_item.price }}
-                        {{ form_item.price.errors }}
-                    </div>
-                    <div class="form-group">
-                        <label for="{{ form_item.describe.id_for_label }}">简介</label>
-                        {{ form_item.describe }}
-                        {{ form_item.describe.errors }}
-                    </div>
-{#                    <button id="post-item-able" type="submit" class="btn btn-danger">提交</button>#}
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ form_item.name.id_for_label }}">服务名称u</label>
+                                {{ form_item.name }}
+                                {{ form_item.name.errors }}
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ form_item.price.id_for_label }}">价格区间</label>
+                                {{ form_item.price }}
+                                {{ form_item.price.errors }}
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ form_item.describe.id_for_label }}">简介</label>
+                                {{ form_item.describe }}
+                                {{ form_item.describe.errors }}
+                            </div>
+                        </div>
+                        {#                    <button id="post-item-able" type="submit" class="btn btn-danger">提交</button>#}
 
 
-                {% endfor %}
+                    {% endfor %}
+                </div>
                 <button id="post-item-alloo" type="submit" class="btn btn-danger">全部提交oo</button>
 
             </div>
@@ -104,6 +113,11 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            $("#add").click(function () {
+                {#                $.get("/add/", {'a': a, 'b': b}, function (ret) {#}
+                {#                    $('#result').html(ret)#}
+                {#                })#}
+            });
             {#            $("#post-item-all").click(function () {#}
             {#                var t = $("form");#}
             {#                var e = $(".form-service");#}
