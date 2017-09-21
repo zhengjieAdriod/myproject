@@ -19,12 +19,17 @@ urlpatterns = [
     # todo 点击条目的编辑按钮, 以及保存编辑后的服务和服务子项
     url(r'^edit_service/(?P<service_pk>[0-9]+)/$', views.update_edit_service, name='edit_service-url'),
 
-    # todo 点击添加子项按钮
-    url(r'^add_item_service/(?P<service_pk>[0-9]+)/$', views.add_item_service, name='add_item_service-url'),
-    # todo 单个服务子项的保存
-    # url(r'^post_service_item/(?P<worker_pk>[0-9]+)/(?P<service_pk>[0-9]+)/(?P<form_item_pk>[0-9]+)/$',
-    #     views.post_service_item,
-    #     name='post_service_item-url'),
+    # todo 在编辑页面点击完成按钮(保存了编辑数据并跳转到前一页)
+    url(r'^edit_service_finish/(?P<service_pk>[0-9]+)/$', views.update_edit_service_finish,
+        name='edit_service_finish-url'),
+
+    # todo 删除服务子项
+    url(r'^delete_item_service/(?P<service_pk>[0-9]+)/(?P<item_pk>[0-9]+)/$', views.delete_item_service,
+        name='delete_item_service-url'),
+
+    # todo 删除服务本项
+    url(r'^delete_service/(?P<worker_pk>[0-9]+)/(?P<service_pk>[0-9]+)/$', views.delete_service,
+        name='delete_service-url'),
 
     # 下面的是rest framwork 的路由update_edit_service
     url(r'^', include(router.urls)),

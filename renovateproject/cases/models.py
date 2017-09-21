@@ -63,7 +63,7 @@ class Service(models.Model):
         return reverse('cases:service_detail-url', kwargs={'service_pk': self.pk})
 
     def get_absolute_url_by_worker(self):
-        return reverse('worker_manage:edit_service-url', kwargs={'service_pk': self.pk})
+        return reverse('worker_manage:edit_service_finish-url', kwargs={'service_pk': self.pk})
 
     def __str__(self):
         return self.name

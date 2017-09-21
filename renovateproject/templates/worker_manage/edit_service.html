@@ -9,80 +9,76 @@
             width: 50px;
         }
 
+        .area-info {
+            margin-top: 10px;
+            background-color: #e0ffbe;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
     </style>
-    <div id="blank" style="height: 600px; background-color: #5bc0de;margin-top: 60px;">
-        <form action="{% url 'worker_manage:edit_service-url' service_pk %}" method="post"
+    <div id="blank" style="height: 600px; background-color: #e2efe6;margin-top: 60px;">
+        <form id="form01" action="" method="post"
               enctype="multipart/form-data" role="form"
               class="list-group-item service-form form-service">
             {% csrf_token %}
-            <div class="list-group">
+            <div class="list-group ">
                 <div class="list-group-item active">
                     <h4 class="list-group-item-heading">
                         编辑服务00
                     </h4>
                 </div>
-
-                <div class="form-group">
-                    <label for="{{ form.image.id_for_label }}">头像</label>
-                    {{ form.image }}
-                    {{ form.image.errors }}
-
+                <div class="area-info">
+                    <div class="form-group">
+                        <label for="{{ form.image.id_for_label }}">头像</label>
+                        {{ form.image }}
+                        {{ form.image.errors }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.name.id_for_label }}">服务名称</label>
+                        {{ form.name }}
+                        {{ form.name.errors }}
+                    </div>
+                    <div class="form-group" style="display: none;">
+                        <label for="{{ form.worker.id_for_label }}">管家名称</label>
+                        {{ form.worker }}
+                        {{ form.worker.errors }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.price.id_for_label }}">价格区间</label>
+                        {{ form.price }}
+                        {{ form.price.errors }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.describe.id_for_label }}">简介</label>
+                        {{ form.describe }}
+                        {{ form.describe.errors }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.scope.id_for_label }}">服务范围</label>
+                        {{ form.scope }}
+                        {{ form.scope.errors }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.type.id_for_label }}">服务类型</label>
+                        {{ form.type }}
+                        {{ form.type.errors }}
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="{{ form.name.id_for_label }}">服务名称</label>
-                    {{ form.name }}
-                    {{ form.name.errors }}
-                    {#                    <input style="display: inline;" value="{{ service.name }}" type="text">#}
-                </div>
-                <div class="form-group" style="display: none;">
-                    <label for="{{ form.worker.id_for_label }}">管家名称</label>
-                    {{ form.worker }}
-                    {{ form.worker.errors }}
-                </div>
-                <div class="form-group">
-                    <label for="{{ form.price.id_for_label }}">价格区间</label>
-                    {{ form.price }}
-                    {{ form.price.errors }}
-                </div>
-                <div class="form-group">
-                    <label for="{{ form.describe.id_for_label }}">简介</label>
-                    {{ form.describe }}
-                    {{ form.describe.errors }}
-                </div>
-                <div class="form-group">
-                    <label for="{{ form.scope.id_for_label }}">服务范围</label>
-                    {{ form.scope }}
-                    {{ form.scope.errors }}
-                    {#                    <input style="display: inline;" value="{{ service.scope }}" type="text">#}
-                </div>
-                <div class="form-group">
-                    <label for="{{ form.type.id_for_label }}">服务类型</label>
-                    {{ form.type }}
-                    {{ form.type.errors }}
-                </div>
-
-                {#                <button type="submit" class="btn btn-danger">提交</button>#}
-                {#            </form>#}
             </div>
             <div class="list-group">
-                {#                <a href="{% url 'worker_manage:add_item_service-url' service_pk %}" class="list-group-item active">#}
-                {#                    <h4 class="list-group-item-heading">#}
-                {#                        服务子项#}
-                {#                    </h4>#}
-                {#                </a>#}
-                <a class="list-group-item active" id="add">
+                <a class="list-group-item active">
                     <h4 class="list-group-item-heading">
                         服务子项
                     </h4>
                 </a>
                 <div>
                     {% for form_item in form_item_list %}
-                        <div>
+                        <div id="last" style="display:inherit;" class="area-info">
                             <div class="form-group">
                                 <label for="{{ form_item.image.id_for_label }}">头像</label>
                                 {{ form_item.image }}
                                 {{ form_item.image.errors }}
-
                             </div>
                             <div class="form-group">
                                 <label for="{{ form_item.name.id_for_label }}">服务名称u</label>
@@ -99,38 +95,47 @@
                                 {{ form_item.describe }}
                                 {{ form_item.describe.errors }}
                             </div>
+                            {% if not forloop.last %}
+                                <a href="{% url 'worker_manage:delete_item_service-url' service_pk form_item.pk %}">
+                                    <p id="delete" class="btn btn-danger">删除子项</p>
+                                </a>
+                            {% endif %}
                         </div>
-                        {#                    <button id="post-item-able" type="submit" class="btn btn-danger">提交</button>#}
-
-
                     {% endfor %}
                 </div>
-                <button id="post-item-alloo" type="submit" class="btn btn-danger">全部提交oo</button>
-
+                <button id="save-next" type="submit" class="btn btn-danger ">保存并继续编辑</button>
+                <button id="finish" type="submit" class="btn btn-danger">完成</button>
             </div>
         </form>
     </div>
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#add").click(function () {
-                {#                $.get("/add/", {'a': a, 'b': b}, function (ret) {#}
-                {#                    $('#result').html(ret)#}
-                {#                })#}
-            });
-            {#            $("#post-item-all").click(function () {#}
-            {#                var t = $("form");#}
-            {#                var e = $(".form-service");#}
-            {#                e01 = e[0];#}
-            {##}
-            {#                var r = $(".form_item");#}
-            {#                r01 = r[0];#}
-            {##}
-            {#                r01.submit();#}
-            {#                e01.submit();#}
-            {#                var d = 0;#}
-            {#            });#}
+            {# 实现点击保存并继续编辑时,页面回到底部#}
+            var next = "";
+            next = {{ next|safe }};
+            if ("bottom" === next) {
+                var h = $(document).height() - $(window).height();
+                {#                $(document).scrollTop(h);#}
+                $("html, body").animate({
+                    scrollTop: h
+                }, {duration: 1000, easing: "swing"});
+            }
+            $("#save-next").click(function () {
+                document.getElementById("form01").action = "{% url 'worker_manage:edit_service-url' service_pk %}";
 
+            });
+            {# todo 点击完成按钮时,首先改变form的action属性值,然后会跳转到该属性指定的值#}
+            $("#finish").click(function () {
+                document.getElementById("form01").action = "{% url 'worker_manage:edit_service_finish-url' service_pk %}";
+            });
+            {#            $('#last').css("display", "inherit");#}
+            {#            $("#add").click(function () {#}
+            {#                $('#last').css("display", "inherit");#}
+            {#                $.get("/add/", {'a': a, 'b': b}, function (ret) {#}
+            {#                    $('#result').html(ret)#}
+            {#                })#}
+            {#            });#}
         });
     </script>
 
