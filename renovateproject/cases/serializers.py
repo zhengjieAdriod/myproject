@@ -15,7 +15,7 @@ class ServiceSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Service
-        fields = ('name', 'type', 'price', 'describe', 'scope', 'worker','image',)
+        fields = ('pk', 'name', 'type', 'price', 'describe', 'scope', 'worker', 'image',)
 
 
 class SchemeSerializer(serializers.HyperlinkedModelSerializer):

@@ -28,7 +28,7 @@ urlpatterns = [
         name='delete_item_service-url'),
 
     # todo 删除服务本项
-    url(r'^delete_service/(?P<worker_pk>[0-9]+)/(?P<service_pk>[0-9]+)/$', views.delete_service,
+    url(r'^delete_service/$', views.delete_service,
         name='delete_service-url'),
 
     # 下面的是rest framwork 的路由update_edit_service

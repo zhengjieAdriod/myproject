@@ -34,8 +34,10 @@ def tab_manage(request):
         worker = workers[0]
         services = worker.service_set.all()
         services = sorted(services, key=lambda service: service.pk, reverse=True)
+        services_serializer = ServiceSerializer(services, many=True)
         return render(request, 'worker_manage/tab_service.html',
-                      context={'worker': worker, 'services': services})
+                      context={'worker': worker, 'services': services, 'worker_pk': worker.pk,
+                               'service_list': json.dumps(services_serializer.data)})
     if index == '1':
         return render(request, 'worker_manage/tab_order.html', context={'test': 1})
     if index == '2':
@@ -281,10 +283,13 @@ def delete_item_service(request, service_pk, item_pk):
 
 
 # todo 删除服务本项的按钮
-@api_view(['GET'])
+@api_view(['POST'])
 @csrf_exempt
 @permission_classes((AllowAny,))
-def delete_service(request, worker_pk, service_pk):
+def delete_service(request):
+    param = request.data
+    worker_pk = param['worker_pk']
+    service_pk = param['service_pk']
     service_list = Service.objects.filter(pk=service_pk)
     if service_list.count() > 0:
         service = service_list.first()

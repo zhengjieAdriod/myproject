@@ -9,9 +9,6 @@
     <script type="text/javascript">
         var worker_pk = {{ worker_pk|safe }}
             $(document).ready(function () {
-{#                $("#delete").click(function () {#}
-{#                    alert("删除吗?")#}
-{#                });#}
                 var error = false;//访问失败后, 可以再次点击而访问网络
                 function getTabHtml(index) {
                     $.post("/tab_manage/", {

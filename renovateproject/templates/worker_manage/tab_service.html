@@ -27,13 +27,6 @@
                     </a>
                 </td>
                 <td>
-                    {#                     <a id="delete" href="{% url 'worker_manage:delete_service-url' worker.pk service.pk %}">#}
-                    {#                        删除#}
-                    {#                    </a>#}
-                    {#                    <div id="delete">#}
-                    {#                        删除#}
-                    {#                    </div>#}
-                    {#                    <p id="delete" class="btn btn-danger">删除</p>#}
                     <a type="button" class="order btn btn-warning" data-toggle="modal"
                        data-target="#myModal">删除</a>
                 </td>
@@ -59,27 +52,41 @@
         </div><!-- /.modal -->
     </div>
     <script type="text/javascript">
+        {# todo 来自于视图函数tab_manage#}
+        var worker_k = {{ worker_pk|safe }};
+        var services_js = {{service_list|safe}};
         var index = 0;
-        var worker_pk = {{ worker}};
-        var service_pk = 0;
         $(document).ready(function () {
+            function getTabHtml(index) {
+                $.post("/tab_manage/", {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    index: index,
+                    worker_pk: worker_pk
+                }, function (data, status) {
+                    if (status === 'success') {
+                        $("#blank").html(data);
+                    } else {
+                    }
+                });
+            }
+
+
             $(".order").click(function () {
-                index = $(this).parents(".ch").index()
-                service_pk = services[index]
+                index = $(this).parents(".ch").index();
             });
-            $("#confirm ").click(function () {
-                $.get("{% url 'worker_manage:delete_service-url' worker.pk 5 %}", {}, function () {
+            $("#confirm").click(function () {
+                {#todo services_js[index]['pk']可以拿到值的前提是,ServiceSerializer的字段中有pk#}
+                $.post("/delete_service/", {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    worker_pk: worker_k,
+                    service_pk: services_js[index - 1]['pk']
+                }, function () {
+                    $('#myModal').modal('hide');
+                    {#起到刷新的作用#}
+                    getTabHtml(0);
                 });
                 return false;
             });
-            {#            $('#myModal').on('hidden.bs.modal', function () {#}
-            {#                $("#myModalLabel").html("立即预约");#}
-            {#                $(".modal-body").css("display", "inherit");#}
-            {#                $(".modal-footer").css("display", "inherit");#}
-            {#            });#}
-            {#            $("#delete").click(function () {#}
-            {#                alert("删除吗?")#}
-            {#            });#}
         });
     </script>
 </div>
