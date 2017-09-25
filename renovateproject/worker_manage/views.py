@@ -11,6 +11,7 @@ from rest_framework.permissions import AllowAny
 
 from cases.models import Service, Worker, SchemeInService
 from cases.serializers import ServiceSerializer, WorkerSerializer, SchemeInServiceSerializer
+from order.serializers import OrderSerializer
 from worker_manage.forms import ServiceForm, AddForm, SchemeInServiceForm
 
 
@@ -30,6 +31,7 @@ def tab_manage(request):
     workers = Worker.objects.filter(pk=worker_pk)
     if len(workers) == 0:
         return render(request, 'worker_manage/tab_errer.html', context={'test': '访问失败'})
+    # 服务列表
     if index == '0':
         worker = workers[0]
         services = worker.service_set.all()
@@ -38,8 +40,15 @@ def tab_manage(request):
         return render(request, 'worker_manage/tab_service.html',
                       context={'worker': worker, 'services': services, 'worker_pk': worker.pk,
                                'service_list': json.dumps(services_serializer.data)})
+    # 订单列表
     if index == '1':
-        return render(request, 'worker_manage/tab_order.html', context={'test': 1})
+        worker = workers[0]
+        orders = worker.order_set.all()
+        orders = sorted(orders, key=lambda order: order.pk, reverse=True)
+        orders_serializer = OrderSerializer(orders, many=True)
+
+        return render(request, 'worker_manage/tab_order.html',
+                      context={'worker': worker, 'orders': orders, 'order_list': json.dumps(orders_serializer.data)})
     if index == '2':
         return render(request, 'worker_manage/tab_comment.html', context={'test': 2})
     return render(request, 'worker_manage/tab_errer.html', context={'test': '访问失败'})

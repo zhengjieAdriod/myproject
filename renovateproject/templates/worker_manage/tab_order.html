@@ -1,1 +1,98 @@
-<div style="color: #e73643">我是订单管理{{ test }}</div>
+<!-- 导入静态文件夹 -->
+{% load staticfiles %}
+<!-- 导入自定义标签 -->
+{#		{% load blog_tags %}#}
+<div class="panel panel-default">
+    <div class="panel-heading" style="display: flex;justify-content: space-between;">
+        <h3 class="panel-title">订单列表</h3>
+        {#        <a style="margin-right: 60px;" href="{% url 'worker_manage:add_service-url' worker.pk %}" data-hover="">新增服务</a>#}
+    </div>
+    <table class="table">
+        <th>订单号</th>
+        <th>业主手机号</th>
+        <th>服务项目</th>
+        <th>下单时间</th>
+        <th>状态</th>
+        <th>删除</th>
+        {% for order in orders %}
+
+            <tr class="ch">
+                <td>{{ order.order_num }}</td>
+                <td>{{ order.owner.telephone }}</td>
+                <td>{{ order.schemeInService.name }}</td>
+                <td>{{ order.created_time }}</td>
+                <td>
+                    {% if order.state == '01' or  order.state == '' %}已下单
+                    {% elif order.state == '02' %}已取消
+                    {% elif order.state == '03' %}已完成
+                    {% endif %}
+                </td>
+                {#                <td>#}
+                {#                    <a href="{{ service.get_absolute_url_by_worker }}">#}
+                {#                        <img style="height: 20px;" src="{% static 'imgs/edit.png' %}"/>#}
+                {#                    </a>#}
+                {#                </td>#}
+                <td>
+                    <a type="button" class="order btn btn-warning" data-toggle="modal"
+                       data-target="#myModal">删除</a>
+                </td>
+            </tr>
+
+        {% endfor %}
+    </table>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title text-center" id="myModalLabel">确定删除吗?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+
+                    <button type="submit" id="confirm" class="btn btn-danger">删除</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <script type="text/javascript">
+        {# todo 来自于视图函数tab_manage#}
+        var worker_k = {{ worker_pk|safe }};
+        var services_js = {{service_list|safe}};
+        var index = 0;
+        $(document).ready(function () {
+            function getTabHtml(index) {
+                $.post("/tab_manage/", {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    index: index,
+                    worker_pk: worker_pk
+                }, function (data, status) {
+                    if (status === 'success') {
+                        $("#blank").html(data);
+                    } else {
+                    }
+                });
+            }
+
+
+            $(".order").click(function () {
+                index = $(this).parents(".ch").index();
+            });
+            $("#confirm").click(function () {
+                {#todo services_js[index]['pk']可以拿到值的前提是,ServiceSerializer的字段中有pk#}
+{#                $.post("/delete_service/", {#}
+{#                    csrfmiddlewaretoken: '{{ csrf_token }}',#}
+{#                    worker_pk: worker_k,#}
+{#                    service_pk: services_js[index - 1]['pk']#}
+{#                }, function () {#}
+{#                    $('#myModal').modal('hide');#}
+                    {#起到刷新的作用#}
+{#                    getTabHtml(0);#}
+{#                });#}
+                return false;
+            });
+        });
+    </script>
+</div>
